@@ -1,7 +1,11 @@
 logs
 project/project
-project/target
-target
+target/
+tools
 tmp
 .history
-dist
+bin
+.classpath
+.settings
+.project
+.cache
