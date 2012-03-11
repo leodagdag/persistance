@@ -24,7 +24,6 @@ case class Post(
 object PostRepository {
   private val posts = MongoDBPlugin.getCollection("Post")
 
-  
   def all: Seq[Post] = posts.find().map(fromDb).toSeq
 
   def byId(id: ObjectId): Option[Post] = posts.findOneByID(id).map(fromDb)
