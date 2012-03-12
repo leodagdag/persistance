@@ -10,3 +10,5 @@ bin
 .project
 .cache
 persistance.iml
+.idea/
+.idea_modules/

@@ -8,6 +8,8 @@ import com.mongodb.casbah.MongoCollection
 import play.api.Plugin
 import com.mongodb.casbah.gridfs.Imports._
 import org.bson.types.ObjectId
+import java.io.{File, FileInputStream}
+import javax.activation.MimetypesFileTypeMap
 
 class MongoDBPlugin(app: Application) extends Plugin {
 
@@ -41,17 +43,24 @@ object MongoDBPlugin {
     "There is no MongoDB plugin registered. Make sure at least one MongoPlugin implementation is enabled.")
 
   def getCollection(name: String)(implicit app: Application): MongoCollection = {
-    if (Logger.isDebugEnabled) {
-      Logger.debug("getCollection(%s)".format(name))
-    }
+    Logger.debug("getCollection(%s)".format(name))
     app.plugin[MongoDBPlugin].map(_.getCollection(name)).getOrElse(error)
   }
 
   def getGridFS()(implicit app: Application): GridFS = {
-    if (Logger.isDebugEnabled) {
-      Logger.debug("getGridFS()")
-    }
+    Logger.debug("getGridFS()")
     app.plugin[MongoDBPlugin].map(_.getGridFS()).getOrElse(error)
+  }
+
+  def createNewFile(file: File, params: Map[String, AnyRef]): ObjectId = {
+    var newFile = getGridFS().createFile(file)
+    newFile.filename = file.getName()
+    newFile.contentType = new MimetypesFileTypeMap().getContentType(file)
+    params foreach {
+      case (key, value) => newFile.put(key, value)
+    }
+    newFile.save
+    newFile.id.asInstanceOf[ObjectId]
   }
 
 }
