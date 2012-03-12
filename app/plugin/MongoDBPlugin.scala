@@ -10,6 +10,7 @@ import com.mongodb.casbah.gridfs.Imports._
 import org.bson.types.ObjectId
 import java.io.{File, FileInputStream}
 import javax.activation.MimetypesFileTypeMap
+import java.security.MessageDigest
 
 class MongoDBPlugin(app: Application) extends Plugin {
 
@@ -19,11 +20,8 @@ class MongoDBPlugin(app: Application) extends Plugin {
     mongoDB(name)
   }
 
-  def getGridFS(): GridFS = {
-    GridFS(mongoDB)
-  }
-
   var mongoDB: MongoDB = _
+  var gridFS: GridFS = _
 
   override def onStart() {
 
@@ -34,9 +32,9 @@ class MongoDBPlugin(app: Application) extends Plugin {
     Logger.debug("db.name:[%s]".format(dbName))
     mongoDB = MongoConnection(seeds)(dbName)
     Logger.info("MongoDB connected")
+    gridFS = GridFS(mongoDB)
   }
 }
-
 object MongoDBPlugin {
 
   private def error = throw new Exception(
@@ -49,18 +47,22 @@ object MongoDBPlugin {
 
   def getGridFS()(implicit app: Application): GridFS = {
     Logger.debug("getGridFS()")
-    app.plugin[MongoDBPlugin].map(_.getGridFS()).getOrElse(error)
+    app.plugin[MongoDBPlugin].map(_.gridFS).getOrElse(error)
   }
+}
 
-  def createNewFile(file: File, params: Map[String, AnyRef]): ObjectId = {
-    var newFile = getGridFS().createFile(file)
+
+object GridFSHelper {
+
+  def createNewFile(file: java.io.File, params: Map[String, AnyRef]): ObjectId = {
+    val newFile: GridFSInputFile = MongoDBPlugin.getGridFS().createFile(file)
     newFile.filename = file.getName()
     newFile.contentType = new MimetypesFileTypeMap().getContentType(file)
     params foreach {
       case (key, value) => newFile.put(key, value)
     }
     newFile.save
+    newFile.validate
     newFile.id.asInstanceOf[ObjectId]
   }
-
 }

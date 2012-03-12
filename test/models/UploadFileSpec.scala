@@ -3,10 +3,10 @@ package models
 import org.specs2.mutable.Specification
 import play.api.test.FakeApplication
 import play.api.test.Helpers.running
-import plugin.MongoDBPlugin
+import plugin.{MongoDBPlugin,GridFSHelper}
 import play.api.Play.current
 import org.bson.types.ObjectId
-import java.io._
+import java.io.{File, FileInputStream, ByteArrayInputStream}
 import java.security.MessageDigest
 import com.mongodb.casbah.gridfs.{GridFSDBFile, GridFS, GridFSInputFile}
 import scala.Some
@@ -18,46 +18,70 @@ import scala.Some
  */
 
 class UploadFileSpec extends Specification {
-  def logo_fh = new FileInputStream("public/images/test/thinking.jpg")
-
-  def logo_bytes = {
-    val data = new Array[Byte](logo_fh.available())
-    logo_fh.read(data)
-    data
-  }
-  def logo = new ByteArrayInputStream(logo_bytes)
-
-  lazy val digest = MessageDigest.getInstance("MD5")
-  digest.update(logo_bytes)
-  lazy val logo_md5 = digest.digest().map("%02X" format _).mkString.toLowerCase()
-
-
 
   "UploadFile" should {
+    val FILE_NAME: String = "thinking.jpg"
+    val FILE_PATH: String = "public/images/test/thinking.jpg"
+    val FILE_CONTENT_TYPE = "image/jpeg"
+    val KEY = "key1"
+    val VALUE= "value1"
+    def logo_fh = new FileInputStream(FILE_PATH)
+
+    def logo_bytes = {
+      val data = new Array[Byte](logo_fh.available())
+      logo_fh.read(data)
+      data
+    }
+    def logo = new ByteArrayInputStream(logo_bytes)
+
+    lazy val digest = MessageDigest.getInstance("MD5")
+    digest.update(logo_bytes)
+    lazy val logo_md5 = digest.digest().map("%02X" format _).mkString.toLowerCase
+
+
+    "with apply" in {
+      running(FakeApplication()) {
+        val gridfs: GridFS = MongoDBPlugin.getGridFS()
+        val logo: File = new File(FILE_PATH)
+        val id = gridfs.apply(logo_bytes){ fh =>
+          fh.filename = FILE_NAME
+          fh.contentType = FILE_CONTENT_TYPE
+        }
+        gridfs.findOne(FILE_NAME) must beSome[GridFSDBFile]
+        var md5 = ""
+        gridfs.findOne(FILE_NAME) foreach { file =>
+          md5 = file.md5
+        }
+        md5 must beEqualTo(logo_md5)
+      }
+    }
     "uploaded manual" in {
       running(FakeApplication()) {
         val gridfs: GridFS = MongoDBPlugin.getGridFS()
-        val logo: FileInputStream = new FileInputStream("public/images/test/thinking.jpg")
+        val logo: File = new File(FILE_PATH)
         val file: GridFSInputFile = gridfs.createFile(logo)
-        file.filename = "thinking.jpg"
-        file.contentType = "image/jpg"
-        file.put("key", "value")
+        file.filename = FILE_NAME
+        file.contentType = FILE_CONTENT_TYPE
+        file.put(KEY, VALUE)
         file.save
-
+        var md5 = ""
+        gridfs.findOne(file.filename) foreach { file =>
+          md5 = file.md5
+        }
         var id: ObjectId = file.id.asInstanceOf[ObjectId]
         var newFile: GridFSDBFile = gridfs.find(id)
         newFile must haveClass[GridFSDBFile]
         file.id must haveClass[ObjectId]
-        file.get("key") must equalTo(Some("value"))
+        file.get(KEY) must equalTo(Some(VALUE))
       }
     }
 
     "upload via Plugin" in {
       running(FakeApplication()) {
-        val logo: File = new File("public/images/test/thinking.jpg")
-        var id = MongoDBPlugin.createNewFile(logo, Map("key1" -> "value1"))
-        var file = MongoDBPlugin.getGridFS().find(id)
-        file.get("key1") must  equalTo(Some("value1"))
+        val logo: File = new File(FILE_PATH)
+        val id = GridFSHelper.createNewFile(logo, Map(KEY -> VALUE))
+        val file = MongoDBPlugin.getGridFS().find(id)
+        file.get(KEY) must  equalTo(Some(VALUE))
         id must haveClass[ObjectId]
       }
     }
