@@ -4,8 +4,8 @@
 
 # Home page
 GET     /                           controllers.Application.index
-GET     /portfolio                  controllers.Portfolio.index
-GET     /contact                    controllers.Contact.index
+GET     /portfolio                  controllers.Portfolios.index
+GET     /contact                    controllers.Contacts.index
 GET     /news                       controllers.News.index
 
 # Map static resources from the /public folder to the /assets URL path

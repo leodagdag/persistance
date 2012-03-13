@@ -9,7 +9,7 @@ import utils.Logging
  * Time: 17:30
  */
 
-object Contact extends Controller {
+object Contacts extends Controller {
 
   def index = Logging {
     TODO
