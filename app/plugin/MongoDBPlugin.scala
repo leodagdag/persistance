@@ -5,12 +5,11 @@ import play.api._
 import com.mongodb.casbah.MongoConnection
 import com.mongodb.casbah.MongoDB
 import com.mongodb.casbah.MongoCollection
+import libs.MimeTypes
 import play.api.Plugin
 import com.mongodb.casbah.gridfs.Imports._
 import org.bson.types.ObjectId
 import java.io.{File, FileInputStream}
-import javax.activation.MimetypesFileTypeMap
-import java.security.MessageDigest
 import com.mongodb.casbah.gridfs.Imports
 
 class MongoDBPlugin(app: Application) extends Plugin {
@@ -65,7 +64,7 @@ object GridFSHelper {
   def createNewFile(file: java.io.File, params: Map[String, AnyRef]): ObjectId = {
     val newFile: GridFSInputFile = gridFS.createFile(file)
     newFile.filename = file.getName()
-    newFile.contentType = new MimetypesFileTypeMap().getContentType(file)
+    newFile.contentType = MimeTypes.forFileName(file.getName()).getOrElse("")
     params foreach {
       case (key, value) => newFile.put(key, value)
     }

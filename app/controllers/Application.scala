@@ -12,9 +12,5 @@ object Application extends Controller {
     }
   }
 
-  def portfolio = Logging {
-    Action{
-      Ok(views.html.portfolio())
-    }
-  }
+
 }
