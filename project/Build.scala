@@ -13,7 +13,12 @@ object ApplicationBuild extends Build {
     )
 
     val main = PlayProject(appName, appVersion, appDependencies, mainLang = SCALA).settings(
-      // Add your own project settings here      
+      lessEntryPoints <<= baseDirectory(customLessEntryPoints())
+    )
+
+  // Only compile the bootstrap bootstrap.less file and any other *.less file in the stylesheets directory
+    def customLessEntryPoints(base: File): PathFinder = (
+        (base / "app" / "assets" / "stylesheets" / "bootstrap" * "bootstrap.less")
     )
 
 }

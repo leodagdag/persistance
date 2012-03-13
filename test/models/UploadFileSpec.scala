@@ -41,15 +41,14 @@ class UploadFileSpec extends Specification {
 
     "with apply" in {
       running(FakeApplication()) {
-        val gridfs: GridFS = MongoDBPlugin.getGridFS()
         val logo: File = new File(FILE_PATH)
-        val id = gridfs.apply(logo_bytes){ fh =>
+        val id = GridFSHelper().apply(logo_bytes){ fh =>
           fh.filename = FILE_NAME
           fh.contentType = FILE_CONTENT_TYPE
         }
-        gridfs.findOne(FILE_NAME) must beSome[GridFSDBFile]
+        GridFSHelper().findOne(FILE_NAME) must beSome[GridFSDBFile]
         var md5 = ""
-        gridfs.findOne(FILE_NAME) foreach { file =>
+        GridFSHelper().findOne(FILE_NAME) foreach { file =>
           md5 = file.md5
         }
         md5 must beEqualTo(logo_md5)
@@ -57,19 +56,18 @@ class UploadFileSpec extends Specification {
     }
     "uploaded manual" in {
       running(FakeApplication()) {
-        val gridfs: GridFS = MongoDBPlugin.getGridFS()
         val logo: File = new File(FILE_PATH)
-        val file: GridFSInputFile = gridfs.createFile(logo)
+        val file: GridFSInputFile = GridFSHelper().createFile(logo)
         file.filename = FILE_NAME
         file.contentType = FILE_CONTENT_TYPE
         file.put(KEY, VALUE)
         file.save
         var md5 = ""
-        gridfs.findOne(file.filename) foreach { file =>
+        GridFSHelper().findOne(file.filename) foreach { file =>
           md5 = file.md5
         }
-        var id: ObjectId = file.id.asInstanceOf[ObjectId]
-        var newFile: GridFSDBFile = gridfs.find(id)
+        val id: ObjectId = file.id.asInstanceOf[ObjectId]
+        val newFile: GridFSDBFile = GridFSHelper().find(id)
         newFile must haveClass[GridFSDBFile]
         file.id must haveClass[ObjectId]
         file.get(KEY) must equalTo(Some(VALUE))
@@ -80,7 +78,7 @@ class UploadFileSpec extends Specification {
       running(FakeApplication()) {
         val logo: File = new File(FILE_PATH)
         val id = GridFSHelper.createNewFile(logo, Map(KEY -> VALUE))
-        val file = MongoDBPlugin.getGridFS().find(id)
+        val file = GridFSHelper().find(id)
         file.get(KEY) must  equalTo(Some(VALUE))
         id must haveClass[ObjectId]
       }

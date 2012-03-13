@@ -11,6 +11,7 @@ import org.bson.types.ObjectId
 import java.io.{File, FileInputStream}
 import javax.activation.MimetypesFileTypeMap
 import java.security.MessageDigest
+import com.mongodb.casbah.gridfs.Imports
 
 class MongoDBPlugin(app: Application) extends Plugin {
 
@@ -31,13 +32,15 @@ class MongoDBPlugin(app: Application) extends Plugin {
     val dbName: String = mongoConfig.getString("db.name").getOrElse("dev")
     Logger.debug("db.name:[%s]".format(dbName))
     mongoDB = MongoConnection(seeds)(dbName)
-    Logger.info("MongoDB connected")
+    Logger.debug("MongoDB connected")
     gridFS = GridFS(mongoDB)
+    Logger.debug("GridFS created")
   }
 }
+
 object MongoDBPlugin {
 
-  private def error = throw new Exception(
+  private[plugin] def error = throw new Exception(
     "There is no MongoDB plugin registered. Make sure at least one MongoPlugin implementation is enabled.")
 
   def getCollection(name: String)(implicit app: Application): MongoCollection = {
@@ -45,17 +48,22 @@ object MongoDBPlugin {
     app.plugin[MongoDBPlugin].map(_.getCollection(name)).getOrElse(error)
   }
 
-  def getGridFS()(implicit app: Application): GridFS = {
+
+  private[plugin] def getGridFS()(implicit app: Application): GridFS = {
     Logger.debug("getGridFS()")
     app.plugin[MongoDBPlugin].map(_.gridFS).getOrElse(error)
   }
 }
 
-
 object GridFSHelper {
 
+  private lazy val gridFS: Imports.GridFS = MongoDBPlugin.getGridFS()
+
+  def apply() = {
+    gridFS
+  }
   def createNewFile(file: java.io.File, params: Map[String, AnyRef]): ObjectId = {
-    val newFile: GridFSInputFile = MongoDBPlugin.getGridFS().createFile(file)
+    val newFile: GridFSInputFile = gridFS.createFile(file)
     newFile.filename = file.getName()
     newFile.contentType = new MimetypesFileTypeMap().getContentType(file)
     params foreach {

@@ -1,4 +1,4 @@
-@(title: String)(content: Html)
+@(title: String, selected: String)(content: Html)
 
 <!DOCTYPE html>
 
@@ -6,10 +6,18 @@
     <head>
         <title>@title</title>
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap/bootstrap.min.css")" />
+        <style type="text/css">
+            body {
+            padding-top: 60px;
+            padding-bottom: 40px;
+            }
+        </style>
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
         <script src="@routes.Assets.at("javascripts/jquery-1.7.1.min.js")" type="text/javascript"></script>
     </head>
     <body>
+        @tags.navigation(selected)
         @content
     </body>
 </html>
