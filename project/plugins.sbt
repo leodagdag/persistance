@@ -7,7 +7,7 @@ resolvers += "Typesafe repository" at "http://repo.typesafe.com/typesafe/release
 resolvers += "sbt-idea-repo" at "http://mpeltonen.github.com/maven/"
 
 // Use the Play sbt plugin for Play projects
-addSbtPlugin("play" % "sbt-plugin" % "2.0-SNAPSHOT")
+addSbtPlugin("play" % "sbt-plugin" % "2.0")
 
 // Use for intellij
 addSbtPlugin("com.github.mpeltonen" % "sbt-idea" % "0.11.0")
