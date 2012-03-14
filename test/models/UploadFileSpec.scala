@@ -3,12 +3,11 @@ package models
 import org.specs2.mutable.Specification
 import play.api.test.FakeApplication
 import play.api.test.Helpers.running
-import plugin.{MongoDBPlugin,GridFSHelper}
-import play.api.Play.current
+import plugin.GridFSHelper
 import org.bson.types.ObjectId
 import java.io.{File, FileInputStream, ByteArrayInputStream}
 import java.security.MessageDigest
-import com.mongodb.casbah.gridfs.{GridFSDBFile, GridFS, GridFSInputFile}
+import com.mongodb.casbah.gridfs.{GridFSDBFile, GridFSInputFile}
 import scala.Some
 
 /**
@@ -24,7 +23,7 @@ class UploadFileSpec extends Specification {
     val FILE_PATH: String = "public/images/test/thinking.jpg"
     val FILE_CONTENT_TYPE = "image/jpeg"
     val KEY = "key1"
-    val VALUE= "value1"
+    val VALUE = "value1"
     def logo_fh = new FileInputStream(FILE_PATH)
 
     def logo_bytes = {
@@ -42,14 +41,16 @@ class UploadFileSpec extends Specification {
     "with apply" in {
       running(FakeApplication()) {
         val logo: File = new File(FILE_PATH)
-        val id = GridFSHelper().apply(logo_bytes){ fh =>
-          fh.filename = FILE_NAME
-          fh.contentType = FILE_CONTENT_TYPE
+        val id = GridFSHelper().apply(logo_bytes) {
+          fh =>
+            fh.filename = FILE_NAME
+            fh.contentType = FILE_CONTENT_TYPE
         }
         GridFSHelper().findOne(FILE_NAME) must beSome[GridFSDBFile]
         var md5 = ""
-        GridFSHelper().findOne(FILE_NAME) foreach { file =>
-          md5 = file.md5
+        GridFSHelper().findOne(FILE_NAME) foreach {
+          file =>
+            md5 = file.md5
         }
         md5 must beEqualTo(logo_md5)
       }
@@ -63,8 +64,9 @@ class UploadFileSpec extends Specification {
         file.put(KEY, VALUE)
         file.save
         var md5 = ""
-        GridFSHelper().findOne(file.filename) foreach { file =>
-          md5 = file.md5
+        GridFSHelper().findOne(file.filename) foreach {
+          file =>
+            md5 = file.md5
         }
         val id: ObjectId = file.id.asInstanceOf[ObjectId]
         val newFile: GridFSDBFile = GridFSHelper().find(id)
@@ -79,7 +81,7 @@ class UploadFileSpec extends Specification {
         val logo: File = new File(FILE_PATH)
         val id = GridFSHelper.createNewFile(logo, Map(KEY -> VALUE))
         val file = GridFSHelper().find(id)
-        file.get(KEY) must  equalTo(Some(VALUE))
+        file.get(KEY) must equalTo(Some(VALUE))
         id must haveClass[ObjectId]
       }
     }

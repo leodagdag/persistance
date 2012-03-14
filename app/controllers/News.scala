@@ -9,7 +9,7 @@ import play.api.mvc.Controller
  * Time: 17:27
  */
 
-object News   extends Controller {
+object News extends Controller {
 
   def index = Logging {
     TODO

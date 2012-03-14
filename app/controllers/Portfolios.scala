@@ -9,7 +9,7 @@ import play.api.mvc.{Action, Controller}
  * Time: 17:26
  */
 
-object Portfolios  extends Controller {
+object Portfolios extends Controller {
 
   def index = Logging {
     Action {

@@ -9,7 +9,6 @@ import libs.MimeTypes
 import play.api.Plugin
 import com.mongodb.casbah.gridfs.Imports._
 import org.bson.types.ObjectId
-import java.io.{File, FileInputStream}
 import com.mongodb.casbah.gridfs.Imports
 
 class MongoDBPlugin(app: Application) extends Plugin {
@@ -61,6 +60,7 @@ object GridFSHelper {
   def apply() = {
     gridFS
   }
+
   def createNewFile(file: java.io.File, params: Map[String, AnyRef]): ObjectId = {
     val newFile: GridFSInputFile = gridFS.createFile(file)
     newFile.filename = file.getName()

@@ -7,14 +7,38 @@ import org.bson.types.ObjectId
 
 class PostsSpec extends Specification {
   "Post Model" should {
+    "removeAll" in {
+      running(FakeApplication()) {
+        PostRepository.removeAll()
+        PostRepository.all.nonEmpty must equalTo(false)
+      }
+    }
     "created" in {
       running(FakeApplication()) {
         val title = "Titre"
-        var post: Post = new Post(title)
+        val post: Post = new Post(title)
         val id: ObjectId = PostRepository.save(post)
         println("id:[%s]".format(id))
-        post.title must equalTo(title)
-        id must haveClass[ObjectId]
+        id must not equalTo (null)
+      }
+    }
+    "all" in {
+      running(FakeApplication()) {
+        PostRepository.all.nonEmpty must equalTo(true)
+      }
+    }
+    "update" in {
+      running(FakeApplication()) {
+        val newTitle = "new title"
+
+        val list = PostRepository.all
+        list.nonEmpty must equalTo(true)
+        val post = list.head
+        val id = post._id.get
+        post.title = newTitle
+        PostRepository.save(post)
+        val updatedPost = PostRepository.byId(id).get
+        updatedPost.title must equalTo(newTitle)
       }
     }
   }

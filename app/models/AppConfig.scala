@@ -2,8 +2,6 @@ package models
 
 import org.bson.types.ObjectId
 
-import com.mongodb.casbah.Imports.WriteConcern
-import com.mongodb.casbah.query.Imports.MongoDBObject
 import com.mongodb.casbah.query.Imports.wrapDBObj
 import play.api.Play.current
 import plugin.MongoDBPlugin
@@ -18,26 +16,19 @@ import utils.ModuleType
  */
 
 case class AppConfig(
-                      name: String,
-                      logo: Option[ObjectId] = None,
-                      modules: List[ModuleType],
-                      _id: Option[ObjectId] = None
+                      var name: String,
+                      var logo: Option[ObjectId] = None,
+                      var modules: List[ModuleType],
+                      val _id: Option[ObjectId] = None
                       )
 
-object AppConfigRepository  extends Model[AppConfig] {
-  private val appconfigs = MongoDBPlugin.getCollection("AppConfig")
+object AppConfigRepository extends Model[AppConfig] {
 
-  def removeById(id: ObjectId) = null
-
-  def all = null
-
-  def byId(id: ObjectId) = null
-
-  def getCollection() = MongoDBPlugin.getCollection("AppConfig")
-
-  def save(t: AppConfig): ObjectId = null
+  override lazy val coll = MongoDBPlugin.getCollection("AppConfig")
 
   protected def fromDb(dbObject: DBObject): AppConfig = grater[AppConfig].asObject(dbObject)
 
   protected def toDb(appConfig: AppConfig): DBObject = grater[AppConfig].asDBObject(appConfig)
+
+  def save(t: AppConfig): ObjectId = null
 }

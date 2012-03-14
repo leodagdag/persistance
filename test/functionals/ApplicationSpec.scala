@@ -15,11 +15,11 @@ class ApplicationSpec extends Specification {
   "Application" should {
     "Action index" in {
       running(FakeApplication()) {
-      val Some(result) = routeAndCall(FakeRequest(GET, "/"))
+        val Some(result) = routeAndCall(FakeRequest(GET, "/"))
 
-      status(result) must equalTo(OK)
-      contentType(result) must beSome("text/html")
-      charset(result) must beSome("utf-8")
+        status(result) must equalTo(OK)
+        contentType(result) must beSome("text/html")
+        charset(result) must beSome("utf-8")
       }
     }
 

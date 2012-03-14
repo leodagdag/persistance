@@ -2,14 +2,10 @@ package models
 
 import org.bson.types.ObjectId
 
-import com.mongodb.casbah.Imports.WriteConcern
-import com.mongodb.casbah.query.Imports.{DBObject,MongoDBObject,wrapDBObj}
+import com.mongodb.casbah.query.Imports.{DBObject, MongoDBObject}
 import com.novus.salat.TypeHintFrequency
-import com.novus.salat.grater
 import com.novus.salat.Context
 import com.novus.salat.StringTypeHintStrategy
-import play.api.Play.current
-import plugin.MongoDBPlugin
 import com.mongodb.casbah.MongoCollection
 
 /**
@@ -20,17 +16,26 @@ import com.mongodb.casbah.MongoCollection
 
 
 trait Model[T] {
-    // Customize Salat context
-    implicit val ctx = new Context {
-      val name = "Custom Context"
-      override val typeHintStrategy = StringTypeHintStrategy(when = TypeHintFrequency.WhenNecessary)
-    }
-    protected def fromDb(dbObject: DBObject): T
-    protected def toDb(t: T): DBObject
+  // Customize Salat context
+  implicit val ctx = new Context {
+    val name = "Custom Context"
+    override val typeHintStrategy = StringTypeHintStrategy(when = TypeHintFrequency.WhenNecessary)
+  }
 
-  def getCollection(): MongoCollection
-  def removeById(id: ObjectId)
-  def all: Seq[T]
-  def byId(id: ObjectId): Option[T]
+  protected def fromDb(dbObject: DBObject): T
+
+  protected def toDb(t: T): DBObject
+
+  protected lazy val coll: MongoCollection = null
+
   def save(t: T): ObjectId
+
+  def removeById(id: ObjectId) = coll.remove(MongoDBObject("_id" -> id))
+
+  def all: Seq[T] = coll.find().map(fromDb).toSeq
+
+  def byId(id: ObjectId): Option[T] = coll.findOneByID(id).map(fromDb)
+
+  def removeAll() = coll.dropCollection()
+
 }
