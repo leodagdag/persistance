@@ -76,7 +76,7 @@ class UploadFileSpec extends Specification {
       }
     }
 
-    "upload via Plugin" in {
+    "upload with Plugin" in {
       running(FakeApplication()) {
         val logo: File = new File(FILE_PATH)
         val id = GridFSHelper.createNewFile(logo, Map(KEY -> VALUE))

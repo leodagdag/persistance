@@ -22,7 +22,7 @@ case class AppConfig(
                       val _id: Option[ObjectId] = None
                       )
 
-object AppConfigRepository extends Model[AppConfig] {
+object AppConfig extends Model[AppConfig] {
 
   override lazy val coll = MongoDBPlugin.getCollection("AppConfig")
 

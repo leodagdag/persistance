@@ -15,7 +15,7 @@ case class Post(
                  val _id: Option[ObjectId] = None
                  )
 
-object PostRepository extends Model[Post] {
+object Post extends Model[Post] {
 
   override lazy val coll = MongoDBPlugin.getCollection("Post")
 

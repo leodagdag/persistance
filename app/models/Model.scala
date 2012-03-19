@@ -3,10 +3,10 @@ package models
 import org.bson.types.ObjectId
 
 import com.mongodb.casbah.query.Imports.{DBObject, MongoDBObject}
-import com.novus.salat.TypeHintFrequency
-import com.novus.salat.Context
-import com.novus.salat.StringTypeHintStrategy
 import com.mongodb.casbah.MongoCollection
+import play.api.Play.current
+import play.api.Play
+import com.novus.salat.{Context, TypeHintFrequency, StringTypeHintStrategy}
 
 /**
  * User: leodagdag
@@ -18,8 +18,13 @@ import com.mongodb.casbah.MongoCollection
 trait Model[T] {
   // Customize Salat context
   implicit val ctx = new Context {
-    val name = "Custom Context"
-    override val typeHintStrategy = StringTypeHintStrategy(when = TypeHintFrequency.WhenNecessary)
+    val name = "play-context"
+    val c = new Context {
+      val name = "play-context"
+      override val typeHintStrategy = StringTypeHintStrategy(when = TypeHintFrequency.WhenNecessary)
+    }
+    c.registerClassLoader(Play.classloader)
+    c
   }
 
   protected def fromDb(dbObject: DBObject): T
