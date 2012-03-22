@@ -2,9 +2,6 @@ package models
 
 import com.mongodb.casbah.Imports._
 
-import play.api.Play.current
-import plugin.{GridFSHelper, MongoDBPlugin}
-
 
 /**
  * Created by IntelliJ IDEA.
@@ -18,6 +15,7 @@ case class Media(
                   var fileId: ObjectId = null,
                   var _id: Option[ObjectId] = None
                   )
+
 /*
 object Media extends Model[Media] {
 

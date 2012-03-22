@@ -1,9 +1,6 @@
 package models
 
 import org.bson.types.ObjectId
-import play.api.Play.current
-import plugin.MongoDBPlugin
-import com.mongodb.casbah.Imports._
 import utils.ModulesType
 
 /**
@@ -18,6 +15,7 @@ case class AppConfig(
                       var modules: List[ModulesType] = List(),
                       val _id: Option[ObjectId] = None
                       )
+
 /*
 object AppConfig extends Model[AppConfig] {
 

@@ -12,9 +12,9 @@ import java.io.File
  * Date: 21/03/12
  * Time: 12:07
  */
-
+ /*
 class PortfolioSpec extends Specification {
-  /*
+
   val FILE_NAME: String = "thinking.jpg"
   val FILE_PATH: String = "public/images/test/" + FILE_NAME
   val FILE_CONTENT_TYPE = "image/jpeg"
@@ -51,5 +51,5 @@ class PortfolioSpec extends Specification {
       }
     }
   }
-  */
 }
+*/

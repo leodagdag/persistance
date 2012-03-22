@@ -16,9 +16,8 @@ import scala.Some
  * Date: 10/03/12
  * Time: 17:17
  */
-
+/*
 class UploadFileSpec extends Specification {
-  /*
   "UploadFile" should {
     val FILE_NAME: String = "thinking.jpg"
     val FILE_PATH: String = "public/images/test/thinking.jpg"
@@ -89,5 +88,5 @@ class UploadFileSpec extends Specification {
       }
     }
   }
-  */
 }
+*/

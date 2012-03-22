@@ -1,7 +1,5 @@
 package models
 
-import play.api.Play.current
-import plugin.MongoDBPlugin
 import com.mongodb.casbah.Imports._
 
 
@@ -17,6 +15,7 @@ case class Portfolio(
                       var medias: List[Media] = List(),
                       val _id: Option[ObjectId] = None
                       )
+
 /*
 object Portfolio extends Model[Portfolio] {
 

@@ -12,7 +12,6 @@ import com.mongodb.casbah.commons.conversions.scala._
  */
 
 
-
 trait Model[T] {
 
   RegisterJodaTimeConversionHelpers()

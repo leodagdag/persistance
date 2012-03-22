@@ -5,6 +5,7 @@ import play.api.test.Helpers.running
 import play.api.test.FakeApplication
 import org.bson.types.ObjectId
 
+/*
 class PostsSpec extends Specification {
 
   "Post Model" should {
@@ -46,4 +47,6 @@ class PostsSpec extends Specification {
       }
     }
   }
+
  }
+*/
