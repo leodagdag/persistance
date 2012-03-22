@@ -17,7 +17,9 @@ object ApplicationBuild extends Build {
     .settings(
       lessEntryPoints <<= baseDirectory(customLessEntryPoints)
     )
+    .settings(
 
+    )
   // Only compile the bootstrap bootstrap.less file and any other *.less file in the stylesheets directory
     def customLessEntryPoints(base: File): PathFinder = (
         (base / "app" / "assets" / "stylesheets" / "bootstrap" * "bootstrap.less") +++
