@@ -1,13 +1,10 @@
 package models
 
 import org.bson.types.ObjectId
-
-import com.mongodb.casbah.query.Imports.wrapDBObj
 import play.api.Play.current
 import plugin.MongoDBPlugin
-import com.mongodb.casbah.commons.TypeImports._
-import com.novus.salat._
-import utils.ModuleType
+import com.mongodb.casbah.Imports._
+import utils.ModulesType
 
 /**
  * User: leodagdag
@@ -17,11 +14,11 @@ import utils.ModuleType
 
 case class AppConfig(
                       var name: String,
-                      var logo: Option[ObjectId] = None,
-                      var modules: List[ModuleType],
+                      var logoId: Option[ObjectId] = None,
+                      var modules: List[ModulesType] = List(),
                       val _id: Option[ObjectId] = None
                       )
-
+/*
 object AppConfig extends Model[AppConfig] {
 
   override lazy val coll = MongoDBPlugin.getCollection("AppConfig")
@@ -31,4 +28,9 @@ object AppConfig extends Model[AppConfig] {
   protected def toDb(appConfig: AppConfig): DBObject = grater[AppConfig].asDBObject(appConfig)
 
   def save(t: AppConfig): ObjectId = null
+
+  def insert(t: AppConfig): ObjectId = null
+
+  def update(t: AppConfig) = null
 }
+*/

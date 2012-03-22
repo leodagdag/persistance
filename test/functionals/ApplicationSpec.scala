@@ -12,6 +12,7 @@ import play.api.test.{FakeApplication, FakeRequest}
  */
 
 class ApplicationSpec extends Specification {
+  /*
   "Application" should {
     "Action index" in {
       running(FakeApplication()) {
@@ -22,6 +23,6 @@ class ApplicationSpec extends Specification {
         charset(result) must beSome("utf-8")
       }
     }
-
   }
+  */
 }

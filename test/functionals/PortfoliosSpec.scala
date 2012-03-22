@@ -11,7 +11,8 @@ import play.api.test.{FakeRequest, FakeApplication}
  */
 
 class PortfoliosSpec extends Specification {
-  "Portfolio" should {
+  /*
+  "Portfolios" should {
     "Action index" in {
       running(FakeApplication()) {
         val Some(result) = routeAndCall(FakeRequest(GET, "/portfolio"))
@@ -22,4 +23,5 @@ class PortfoliosSpec extends Specification {
       }
     }
   }
+  */
 }

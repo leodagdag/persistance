@@ -6,14 +6,14 @@ package utils
  * Time: 22:24
  */
 
-sealed abstract class ModuleType(val i18nKey: String)
+sealed abstract class ModulesType(val i18nKey: String)
 
 object ModulesType {
 
-  object BLOG extends ModuleType("module.blog")
+  object HOME extends ModulesType("module.home")
 
-  object PORTFOLIO extends ModuleType("module.portfolio")
+  object BLOG extends ModulesType("module.blog")
 
-  object VITRINE extends ModuleType("module.vitrine")
+  object PORTFOLIO extends ModulesType("module.portfolio")
 
 }

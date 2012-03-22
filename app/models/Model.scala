@@ -1,12 +1,9 @@
 package models
 
 import org.bson.types.ObjectId
+import com.mongodb.casbah.Imports._
+import com.mongodb.casbah.commons.conversions.scala._
 
-import com.mongodb.casbah.query.Imports.{DBObject, MongoDBObject}
-import com.mongodb.casbah.MongoCollection
-import play.api.Play.current
-import play.api.Play
-import com.novus.salat.{Context, TypeHintFrequency, StringTypeHintStrategy}
 
 /**
  * User: leodagdag
@@ -15,17 +12,10 @@ import com.novus.salat.{Context, TypeHintFrequency, StringTypeHintStrategy}
  */
 
 
+
 trait Model[T] {
-  // Customize Salat context
-  implicit val ctx = new Context {
-    val name = "play-context"
-    val c = new Context {
-      val name = "play-context"
-      override val typeHintStrategy = StringTypeHintStrategy(when = TypeHintFrequency.WhenNecessary)
-    }
-    c.registerClassLoader(Play.classloader)
-    c
-  }
+
+  RegisterJodaTimeConversionHelpers()
 
   protected def fromDb(dbObject: DBObject): T
 
@@ -33,14 +23,21 @@ trait Model[T] {
 
   protected lazy val coll: MongoCollection = null
 
-  def save(t: T): ObjectId
-
-  def removeById(id: ObjectId) = coll.remove(MongoDBObject("_id" -> id))
-
   def all: Seq[T] = coll.find().map(fromDb).toSeq
 
   def byId(id: ObjectId): Option[T] = coll.findOneByID(id).map(fromDb)
 
+  def save(t: T): ObjectId
+
+  def removeById(id: ObjectId) = coll.remove(MongoDBObject("_id" -> id))
+
   def removeAll() = coll.dropCollection()
 
 }
+
+
+
+
+
+
+

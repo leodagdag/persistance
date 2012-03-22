@@ -1,4 +1,6 @@
-@(selected: String = "home")
+@(selected: utils.ModulesType = utils.ModulesType.HOME)
+@import utils.ModulesType
+
 <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
         <div class="container">
@@ -7,12 +9,12 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </a>
-            <a class="brand" href="#">[LA-trait]</a>
+            <a class="brand" href="@routes.Application.index()">[LA-trait]</a>
             <div class="nav-collapse">
                 <ul class="nav">
-                    <li @if(selected.equals("Home")){ class="active"} ><a href="@routes.Application.index()">Home</a></li>
-                    <li @if(selected.equals("Portfolio")){ class="active"} ><a href="@routes.Portfolios.index()">Portfolio</a></li>
-                    <li @if(selected.equals("News")){ class="active"}><a href="#contact">News</a></li>
+                    <li @if(ModulesType.HOME.equals(selected)){ class="active"} ><a href="@routes.Application.index()">@ModulesType.HOME.i18nKey</a></li>
+                    <li @if(ModulesType.PORTFOLIO.equals(selected)){ class="active"} ><a href="@routes.Portfolios.index()">@ModulesType.PORTFOLIO.i18nKey</a></li>
+                    <li @if(ModulesType.BLOG.equals(selected)){ class="active"}><a href="@routes.Blog.index()">@ModulesType.BLOG.i18nKey</a></li>
                 </ul>
             </div><!--/.nav-collapse -->
         </div>
