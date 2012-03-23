@@ -1,6 +1,6 @@
 package models
 
-import scala.collection.JavaConversions.iterableAsScalaIterable
+import scala.collection.JavaConversions._
 import org.codehaus.jackson.annotate.JsonProperty
 import reflect.BeanProperty
 import javax.persistence.Id
@@ -34,14 +34,15 @@ object Article {
 
   def findById(id: String) = Option(db.findOneById(id))
 
-  def findByAuthor(author: String) = {
-   val byAuthor = db.find().is("author", author)
-   var list:List[Article] = List[Article]()
-   while(byAuthor.hasNext()){
-	   list = list :+ byAuthor.next()
-   }
-   list
-  }
+  
+  
+  def findByAuthor(author: String) = db.find().is("author", author).iterator().toSeq
 
+  def all = db.find().iterator().toList
+  
+  
+  
   def deleteAll() = db.drop()
+  
+  
 }
