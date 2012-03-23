@@ -1,10 +1,9 @@
 package models
 
+import org.specs2.mutable._
 import play.api.test.Helpers.running
 import play.api.test.FakeApplication
-import org.specs2.mutable._
-import util.Random
-import com.mongodb.Mongo
+import play.modules.mongodb.jackson.MongoDB
 
 /**
  * User: leodagdag
@@ -13,10 +12,11 @@ import com.mongodb.Mongo
  */
 
 class ArticleSpec extends Specification {
+
   "Article Model" should {
 
     "removeAll" in new Setup {
-      implicit val app = fakeApp()
+      implicit val app = fakeApp(Map.empty)
       running(app) {
         Article.deleteAll
         false mustEqual false
@@ -24,7 +24,7 @@ class ArticleSpec extends Specification {
     }
 
     "create 2 articles with same author" in new Setup {
-      implicit val app = fakeApp()
+      implicit val app = fakeApp(Map.empty)
       running(app) {
         val article1 = Article(title = "Titre 1", author = "Auteur", content = "Contenu 1")
         Article.save(article1)
@@ -32,16 +32,21 @@ class ArticleSpec extends Specification {
 
         Article.save(article2)
         val byAuthor = Article.findByAuthor("Auteur")
+        byAuthor.foreach(a => println(a))
+        
         byAuthor mustNotEqual null
       }
     }
   }
 
-
-  trait Setup  {
-    def fakeApp() = {
+  trait Setup extends After {
+    def fakeApp(o: Map[String, String]) = {
       FakeApplication(additionalConfiguration = Map("ehcacheplugin" -> "disabled",
         "mongodbJacksonMapperCloseOnStop" -> "disabled"))
     }
+
+    def after {
+    }
   }
+
 }

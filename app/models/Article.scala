@@ -34,7 +34,14 @@ object Article {
 
   def findById(id: String) = Option(db.findOneById(id))
 
-  def findByAuthor(author: String) = db.find().is("author", author)
+  def findByAuthor(author: String) = {
+   val byAuthor = db.find().is("author", author)
+   var list:List[Article] = List[Article]()
+   while(byAuthor.hasNext()){
+	   list = list :+ byAuthor.next()
+   }
+   list
+  }
 
   def deleteAll() = db.drop()
 }

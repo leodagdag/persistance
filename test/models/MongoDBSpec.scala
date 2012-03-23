@@ -15,9 +15,9 @@ import com.mongodb.{ServerAddress, Mongo}
  * Date: 22/03/12
  * Time: 22:30
  */
-
-class MongoDBSpec extends Specification {
 /*
+class MongoDBSpec extends Specification {
+
   "The MongoDB plugin" should {
 
     "be configurable by just host" in new Setup {
@@ -80,7 +80,7 @@ class MongoDBSpec extends Specification {
       mongo.getDB("play").getCollection(collName).drop()
     }
   }
-     */
+
 }
 
 class MockObject(@Id val id: String,
@@ -88,3 +88,4 @@ class MockObject(@Id val id: String,
   @Id def getId = id;
 }
 
+*/
