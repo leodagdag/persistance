@@ -1,0 +1,52 @@
+package models
+
+import org.specs2.mutable.Specification
+import play.api.test.Helpers.running
+import play.api.test.FakeApplication
+import org.bson.types.ObjectId
+
+/*
+class PostOldsSpec extends Specification {
+
+  "PostOld Model" should {
+    "removeAll" in {
+      running(FakeApplication()) {
+        PostOld.removeAll()
+        PostOld.all.nonEmpty must equalTo(false)
+      }
+    }
+    "created" in {
+      running(FakeApplication()) {
+        val title = "Titre"
+        val postOld: PostOld = new PostOld(title)
+        val id: ObjectId = PostOld.save(postOld)
+        id must not equalTo (null)
+      }
+    }
+    "all" in {
+      running(FakeApplication()) {
+        PostOld.all.size must equalTo(1)
+      }
+    }
+    "update" in {
+      running(FakeApplication()) {
+        val newTitle = "new title"
+        val list = PostOld.all
+        list.nonEmpty must equalTo(true)
+        val postOld = list.head
+        val id = postOld._id.get
+        postOld.title = newTitle
+        PostOld.save(PostOld)
+        val updatedPostOld = PostOld.byId(id).get
+        updatedPostOld.title must equalTo(newTitle)
+      }
+    }
+    "still one" in {
+      running(FakeApplication()) {
+        PostOld.all.size must equalTo(1)
+      }
+    }
+  }
+
+ }
+*/

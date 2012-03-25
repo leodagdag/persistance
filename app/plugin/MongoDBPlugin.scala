@@ -24,10 +24,10 @@ class MongoDBPlugin(app: Application) extends Plugin {
   override def onStart() {
 
     val mongoConfig: Configuration = app.configuration.getConfig("mongodb").getOrElse(Configuration.empty)
-    val seeds: String = mongoConfig.getString("seeds").getOrElse(DEFAULT_HOST)
-    Logger.debug("seeds:[%s]".format(seeds))
-    val dbName: String = mongoConfig.getString("db.name").getOrElse("dev")
-    Logger.debug("db.name:[%s]".format(dbName))
+    val seeds: String = mongoConfig.getString("servers").getOrElse(DEFAULT_HOST)
+    Logger.debug("servers:[%s]".format(seeds))
+    val dbName: String = mongoConfig.getString("database").getOrElse("dev")
+    Logger.debug("database:[%s]".format(dbName))
     mongoDB = MongoConnection(seeds)(dbName)
     Logger.debug("MongoDB connected")
     gridFS = GridFS(mongoDB)
