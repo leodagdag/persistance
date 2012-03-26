@@ -12,7 +12,7 @@ import com.mongodb.casbah.Imports._
 
 case class Portfolio(
                       var name: String,
-                      var medias: List[Media] = List(),
+                      var medias: List[Media] = List.empty,
                       val _id: Option[ObjectId] = None
                       )
 

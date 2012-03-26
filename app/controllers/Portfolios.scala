@@ -1,17 +1,17 @@
 package controllers
 
 import utils.Logging
-import play.api.mvc.{Action, Controller}
+import play.api.mvc.{ Action, Controller }
 import org.bson.types.ObjectId
 import play.api.data.Forms._
 import play.api.data.Form
-import models.{Media, Portfolio}
+import models.{ Media, Portfolio }
 
 /**
- * User: f.patin
- * Date: 13/03/12
- * Time: 17:26
- */
+  * User: f.patin
+  * Date: 13/03/12
+  * Time: 17:26
+  */
 
 object Portfolios extends Controller {
 
@@ -36,12 +36,11 @@ object Portfolios extends Controller {
     }
   }
 
-  def get(id : ObjectId) = Logging {
+  def get(id: ObjectId) = Logging {
     Action {
       TODO
-      }
     }
-
+  }
 
 }
 

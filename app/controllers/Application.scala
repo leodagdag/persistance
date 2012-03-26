@@ -7,13 +7,12 @@ import utils.Logging
 
 object Application extends Controller {
 
-  lazy val config:Option[Configuration] = current.configuration.getConfig("app")
-  
+  lazy val config: Option[Configuration] = current.configuration.getConfig("app")
+
   def index = Logging {
     Action {
       Ok(views.html.index("Your new application is ready."))
     }
   }
-
 
 }

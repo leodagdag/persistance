@@ -8,7 +8,7 @@ object ApplicationBuild extends Build {
   val appVersion = "1.0-SNAPSHOT"
 
   val appDependencies = Seq(
-    "net.vz.mongodb.jackson" % "play-mongo-jackson-mapper_2.9.1" % "1.0.0-rc.2",
+    //"net.vz.mongodb.jackson" % "play-mongo-jackson-mapper_2.9.1" % "1.0.0-rc.2",
     "com.mongodb.casbah" %% "casbah" % "2.1.5-1",
     "com.novus" %% "salat-core" % "0.0.8-SNAPSHOT"
   )

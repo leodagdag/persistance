@@ -1,2 +1,1 @@
-1000:play.modules.mongodb.jackson.MongoDBPlugin
-5000:plugin.MongoDBPlugin
+1001:plugin.MongoDBPlugin
