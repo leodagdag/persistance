@@ -2,6 +2,7 @@ import com.novus.salat.Context
 import play.api.Play.current
 import play.api.Play
 import com.mongodb.casbah.MongoConnection
+import play.api.Logger
 
 package object models {
 /**
@@ -12,7 +13,7 @@ package object models {
       val name = "play-context"
     }
     c.registerClassLoader(Play.classloader)
-    println("New context registration done!")
+    Logger.debug("New context registration done!")
     c
   }
   

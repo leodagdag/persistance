@@ -50,8 +50,9 @@ class PostSpec extends Specification {
 
     "create 12 Posts" in {
       running(FakeApplication()) {
+        var post: Post = null
         for (i <- 1 to 12) {
-          var post = new Post(title = "titre" + i)
+          post = new Post(title = "titre" + i)
           Post.save(post)
           if (i == 12) { deleteId = post._id }
         }
