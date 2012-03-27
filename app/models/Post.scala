@@ -7,8 +7,8 @@ import javax.persistence.EntityNotFoundException
 
 case class Post(_id: ObjectId = new ObjectId,
   title: String,
-  content: String = null,
-  var comments: List[Comment] = List.empty)
+  content: Option[String] = None,
+  var comments: List[Comment] = null)
 
 object Post extends SalatDAO[Post, ObjectId](collection = DB.connection("Post")) with Model[Post] {
 
@@ -18,7 +18,11 @@ object Post extends SalatDAO[Post, ObjectId](collection = DB.connection("Post"))
     val post = this.findOneByID(id)
     post match {
       case Some(post) =>
-        post.comments = post.comments :+ comment
+        if(post.comments == null) { 
+          post.comments = List(comment)
+        } else {
+          post.comments = post.comments :+ comment
+        }
         this.save(post)
       case _ => throw new EntityNotFoundException("Problem retrieving a post with id[%s]".format(id))
     }
