@@ -3,7 +3,7 @@ import play.api.Play.current
 import play.api.Play
 import com.mongodb.casbah.MongoConnection
 
-package object salatctx {
+package object models {
 /**
    * Here is where we define the custom Play serialization context, including the Play classloader.
    */
@@ -12,7 +12,7 @@ package object salatctx {
       val name = "play-context"
     }
     c.registerClassLoader(Play.classloader)
-
+    println("New context registration done!")
     c
   }
   

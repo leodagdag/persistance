@@ -7,18 +7,17 @@ import com.mongodb.casbah.commons.MongoDBObject
 import com.mongodb.casbah.commons.Imports._
 import com.mongodb.WriteConcern
 import models._
+import play.api.test.FakeApplication
+import org.joda.time.DateTime
 
 class PostSpec extends Specification {
 
   com.mongodb.casbah.commons.conversions.scala.RegisterConversionHelpers()
   com.mongodb.casbah.commons.conversions.scala.RegisterJodaTimeConversionHelpers()
 
-  
-  
   "with Salat" should {
     var savedId: ObjectId = null
-    
-    
+    var deleteId: ObjectId = null
     "remove all" in {
       running(FakeApplication()) {
         Post.collection.drop()
@@ -51,13 +50,15 @@ class PostSpec extends Specification {
 
     "create 12 Posts" in {
       running(FakeApplication()) {
-        for(i <- 1 to 12) {
-          Post.save(new Post(title = "titre" + i, content = "content"))
+        for (i <- 1 to 12) {
+          var post = new Post(title = "titre" + i, content = "content")
+          Post.save(post)
+          if (i == 12) { deleteId = post._id }
         }
         Post.count() mustEqual 13
       }
     }
-    
+
     "find all" in {
       running(FakeApplication()) {
         val all = Post.find(MongoDBObject()).toList
@@ -65,22 +66,22 @@ class PostSpec extends Specification {
       }
     }
 
-    "count" in  {
-       running(FakeApplication()) {
-         Post.count() mustEqual 13
-       }
+    "count" in {
+      running(FakeApplication()) {
+        Post.count() mustEqual 13
+      }
     }
-    
-    "find by page" in  {
-    	 running(FakeApplication()) {
-    	   implicit val dao = Post
-    	   Post.byPage(0).size mustEqual Post.byPage(1).size
-    	   Post.byPage(1).size mustEqual 10
-    	   Post.byPage(2).size mustEqual 3
-    	   Post.byPage(3).size mustEqual 0
-    	 }
+
+    "find by page" in {
+      running(FakeApplication()) {
+        implicit val dao = Post
+        Post.byPage(0).size mustEqual Post.byPage(1).size
+        Post.byPage(1).size mustEqual 10
+        Post.byPage(2).size mustEqual 3
+        Post.byPage(3).size mustEqual 0
+      }
     }
-    
+
     "update" in {
       running(FakeApplication()) {
         val newPost = Post.findOneByID(savedId).get
@@ -89,13 +90,29 @@ class PostSpec extends Specification {
         Post.findOneByID(savedId).get.title mustEqual "new Title"
       }
     }
-    
+
+    "add a comment" in {
+      running(FakeApplication()) {
+        var comment = new Comment(created = new DateTime(), content = "new comment")
+        Post.addComment(savedId, comment)
+        var post = Post.findOneByID(savedId).get
+        post.comments.size mustEqual 1
+      }
+    }
+
     "remove by Id" in {
-     running(FakeApplication()) {
-       Post.removeById(savedId)
-       Post.findOneByID(savedId) mustEqual None
-       Post.count() mustEqual 12
-     }
+      running(FakeApplication()) {
+        Post.removeById(deleteId)
+        Post.findOneByID(deleteId) mustEqual None
+        Post.count() mustEqual 12
+      }
+    }
+
+    "add a comment generate EntityNotFoundException" in {
+      running(FakeApplication()) {
+        var comment = new Comment(created = new DateTime(), content = "new comment")
+        Post.addComment(deleteId, comment) must throwAn[Exception]
+      }
     }
 
   }

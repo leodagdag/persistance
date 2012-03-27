@@ -8,7 +8,7 @@ import com.mongodb.casbah.commons.MongoDBObject
 import com.mongodb.casbah.commons.Imports._
 import com.mongodb.WriteConcern
 import models._
-
+/*
 class MediaSpec  extends Specification {
 
   com.mongodb.casbah.commons.conversions.scala.RegisterConversionHelpers()
@@ -101,3 +101,4 @@ class MediaSpec  extends Specification {
 
   }
 }
+*/
