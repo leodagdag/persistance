@@ -12,9 +12,10 @@
             <a class="brand" href="@routes.Application.index()">[LA-trait]</a>
             <div class="nav-collapse">
                 <ul class="nav">
-                    <li @if(ModulesType.HOME.equals(selected)){ class="active"} ><a href="@routes.Application.index()">@ModulesType.HOME.i18nKey</a></li>
-                    <li @if(ModulesType.PORTFOLIO.equals(selected)){ class="active"} ><a href="@routes.Portfolios.index()">@ModulesType.PORTFOLIO.i18nKey</a></li>
-                    <li @if(ModulesType.BLOG.equals(selected)){ class="active"}><a href="@routes.Blog.index()">@ModulesType.BLOG.i18nKey</a></li>
+                    <li @if(ModulesType.HOME.equals(selected)){ class="active"} ><a href="@routes.Application.index()">@Messages(ModulesType.HOME.i18nKey)</a></li>
+                    <li @if(ModulesType.PORTFOLIO.equals(selected)){ class="active"} ><a href="@routes.Portfolios.index()">@Messages(ModulesType.PORTFOLIO.i18nKey)</a></li>
+                    <li @if(ModulesType.BLOG.equals(selected)){ class="active"}><a href="@routes.Blog.index()">@Messages(ModulesType.BLOG.i18nKey)</a></li>
+                    <li @if(ModulesType.BLOG_ADMIN.equals(selected)){ class="active"}><a href="@routes.Blog.admin()">@Messages(ModulesType.BLOG_ADMIN.i18nKey)</a></li>
                 </ul>
             </div><!--/.nav-collapse -->
         </div>

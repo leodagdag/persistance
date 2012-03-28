@@ -6,6 +6,9 @@ import play.api.Configuration
 import play.api.Play.current
 import models._
 import play.api.mvc.Action
+import play.api.i18n.Lang
+import play.api.i18n.Messages
+
 
 /**
  * User: leodagdag
@@ -27,9 +30,15 @@ object Blog extends Controller {
       val count = Post.count()
       val featured = Post.featured
       val posts = Post.byPage(1)
-      
       Ok(views.html.blog.index(count, featured, posts))
     }
   }
 
+  def admin = Logging {
+    Action {
+      val posts = Post.all
+      Ok(views.html.blog.admin(posts))
+    }
+  }
+  
 }

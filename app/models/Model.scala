@@ -17,4 +17,7 @@ trait Model[T <: AnyRef] {
     dao.find(MongoDBObject()).skip(skip).limit(PAGE_SIZE).toList
   }
   
+  def all(implicit dao: SalatDAO[T, ObjectId]): List[T] = {
+    dao.find(MongoDBObject.empty).toList
+  }
 }
