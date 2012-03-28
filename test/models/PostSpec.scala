@@ -9,6 +9,7 @@ import com.mongodb.WriteConcern
 import models._
 import play.api.test.FakeApplication
 import org.joda.time.DateTime
+import utils._
 
 class PostSpec extends Specification {
 

@@ -4,12 +4,14 @@ import play.api.mvc.Controller
 import utils.Logging
 import play.api.Configuration
 import play.api.Play.current
+import models._
+import play.api.mvc.Action
 
 /**
-  * User: leodagdag
-  * Date: 21/03/12
-  * Time: 09:48
-  */
+ * User: leodagdag
+ * Date: 21/03/12
+ * Time: 09:48
+ */
 
 object Blog extends Controller {
 
@@ -18,8 +20,16 @@ object Blog extends Controller {
     Configuration.empty
   }
 
+  implicit lazy val dao = Post
+
   def index = Logging {
-    TODO
+    Action {
+      val count = Post.count()
+      val featured = Post.featured
+      val posts = Post.byPage(1)
+      
+      Ok(views.html.blog.index(count, featured, posts))
+    }
   }
 
 }

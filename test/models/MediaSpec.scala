@@ -10,6 +10,8 @@ import models._
 import play.api.test.FakeApplication
 import java.io.File
 import plugin.GridFSHelper
+import play.api.test.FakeApplication
+import utils._
 
 class MediaSpec extends Specification {
 
@@ -84,10 +86,10 @@ class MediaSpec extends Specification {
     "find by page" in {
       running(FakeApplication()) {
         implicit val dao = Media
-        Media.byPage(0).size mustEqual Media.byPage(1).size
-        Media.byPage(1).size mustEqual 10
-        Media.byPage(2).size mustEqual 3
-        Media.byPage(3).size mustEqual 0
+        Media.byPage(0) must haveTheSameElementsAs(Media.byPage(1))
+        Media.byPage(1) must have size(10)
+        Media.byPage(2) must have size(3)
+        Media.byPage(3) must have size(0)
       }
     }
 
@@ -108,16 +110,28 @@ class MediaSpec extends Specification {
       }
     }
 
-    "create with File" in {
+    "create with a File" in {
       running(FakeApplication()) {
-        val logo: File = new File(filePath)
-        val fileId: ObjectId = GridFSHelper.createNewFile(logo, Map(key -> value))
+        val file: File = new File(filePath)
+        val fileId: ObjectId = GridFSHelper.createNewFile(file, Map(key -> value))
         val media = new Media(title = "titre", fileId = Some(fileId))
         Media.save(media)
         val newMedia = Media.findOneByID(media._id).get
         newMedia._id mustEqual media._id
         newMedia.fileId mustNotEqual None
       }
+    }
+    
+    "update with a File" in {
+      running(FakeApplication()){
+        val file: File = new File(filePath)
+        val fileId: ObjectId = GridFSHelper.createNewFile(file, Map(key -> value))
+        val media = Media.findOneByID(savedId).get
+        media.fileId = Some(fileId)
+        Media.save(media)
+        Media.findOneByID(savedId).get.fileId must beAnInstanceOf[Option[ObjectId]]
+      }
+      
     }
 
   }

@@ -10,8 +10,8 @@
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap/responsive.min.css")" />
         <style type="text/css">
             body {
-            padding-top: 60px;
-            padding-bottom: 40px;
+            	padding-top: 60px;
+            	padding-bottom: 40px;
             }
         </style>
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
@@ -19,6 +19,8 @@
     </head>
     <body>
         @tags.navigation(selected)
-        @content
+		<div class="container">
+        	@content
+		</div>
     </body>
 </html>

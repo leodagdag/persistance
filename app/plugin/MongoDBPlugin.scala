@@ -4,9 +4,7 @@ import play.api.Play._
 import play.api.libs.MimeTypes
 import play.api._
 import play.api.Plugin
-
 import org.bson.types.ObjectId
-
 import com.mongodb.casbah.Imports._
 import com.mongodb.casbah.gridfs.Imports._
 
@@ -40,16 +38,23 @@ object MongoDBPlugin {
   private[plugin] def error = throw new Exception(
     "There is no MongoDB plugin registered. Make sure at least one MongoPlugin implementation is enabled.")
 
-  def getCollection(name: String)(implicit app: Application): MongoCollection = {
-    Logger.debug("getCollection(%s)".format(name))
-    app.plugin[MongoDBPlugin].map(_.getCollection(name)).getOrElse(error)
-  }
-
-
   private[plugin] def getGridFS()(implicit app: Application): GridFS = {
     Logger.debug("getGridFS()")
     app.plugin[MongoDBPlugin].map(_.gridFS).getOrElse(error)
   }
+  
+  def collection(name: String)(implicit app: Application): MongoCollection = {
+    Logger.debug("getCollection(%s)".format(name))
+    app.plugin[MongoDBPlugin].map(_.getCollection(name)).getOrElse(error)
+  }
+
+  def connection(implicit app: Application): MongoDB = {
+    Logger.debug("connexion")
+    app.plugin[MongoDBPlugin].map(_.mongoDB).getOrElse(error)
+  }
+  
+  
+
 }
 
 object GridFSHelper {

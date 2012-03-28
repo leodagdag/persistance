@@ -1,0 +1,27 @@
+@(count: Long, featured: Option[Post], posts: List[Post])
+
+@import utils.ModulesType
+
+@main("Blog",ModulesType.BLOG) {
+	
+	  @featured match {
+	    case Some(featured) => {
+		  <div class="hero-unit">
+		  	<h1>@featured.title</h1>  
+		  	<p>@featured.content</p>
+	    	<p><a class="btn btn-primary btn-large">Learn more »</a></p>
+		  </div>
+	    }
+	  }
+		
+	
+	@for(post <- posts) {
+		<div class="row">
+			<div class="span12">
+				<h2>@post.title</h2>
+				<p>@post.content.get</p>
+				<p><a class="btn">Learn more »</a></p>
+			</div>
+		</div>
+	}
+}

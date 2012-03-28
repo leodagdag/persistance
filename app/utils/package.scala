@@ -3,8 +3,9 @@ import play.api.Play.current
 import play.api.Play
 import com.mongodb.casbah.MongoConnection
 import play.api.Logger
+import plugin.MongoDBPlugin
 
-package object models {
+package object utils {
 /**
    * Here is where we define the custom Play serialization context, including the Play classloader.
    */
@@ -18,6 +19,8 @@ package object models {
   }
   
   object DB {
-    val connection = MongoConnection()("dev")
+    //val connection = MongoConnection()("dev")
+    val connection = MongoDBPlugin.connection
+    
   }
 }

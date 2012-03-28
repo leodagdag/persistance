@@ -2,6 +2,7 @@ package models
 
 import com.novus.salat.dao._
 import com.mongodb.casbah.commons.Imports._
+import utils._
 
 trait Model[T <: AnyRef] {
 
@@ -15,5 +16,5 @@ trait Model[T <: AnyRef] {
     }
     dao.find(MongoDBObject()).skip(skip).limit(PAGE_SIZE).toList
   }
-
+  
 }

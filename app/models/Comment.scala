@@ -3,6 +3,7 @@ package models
 import com.novus.salat.dao._
 import com.mongodb.casbah.commons.Imports._
 import org.joda.time._
+import utils._
 
 case class Comment(created: DateTime = new DateTime(),
   content: String)

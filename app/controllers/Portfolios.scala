@@ -5,7 +5,7 @@ import play.api.mvc.{ Action, Controller }
 import org.bson.types.ObjectId
 import play.api.data.Forms._
 import play.api.data.Form
-import models.{ Media, Portfolio }
+import models._
 
 /**
   * User: f.patin
