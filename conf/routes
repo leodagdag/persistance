@@ -5,12 +5,17 @@
 # Home page
 GET     /                           controllers.Application.index
 
-GET		/login						controllers.Application.login
+# Authentication
+GET     /login                              controllers.Application.login
+POST    /login                              controllers.Application.authenticate
+GET     /logout                             controllers.Application.logout
+
 # Portfolio
 GET     /portfolio                  controllers.Portfolios.index
 # Blog
 GET     /blog                       controllers.Blog.index
-GET     /blog/admin                 controllers.Blog.admin
+# Administration
+GET     /admin		                controllers.Administration.index
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

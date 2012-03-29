@@ -1,0 +1,29 @@
+@(loginForm: Form[(String,String)])(implicit flash: Flash, lang: play.api.i18n.Lang)
+
+@import helper._
+@import play.api.i18n
+
+@implicitFieldConstructor = @{ FieldConstructor(tags.twitterBootstrapInput.f) }
+
+@main(None, None) {
+    <div class="row">
+		<div class="span12">
+			@loginForm.globalError.map { error =>
+		    	<p class="error">@error.message</p>
+			}
+			@flash.get("success").map { message =>
+				<p class="success">@message</p>
+			}
+			@form(action = routes.Application.authenticate, args = 'class -> "form-horizontal") {
+				<legend>Sign in</legend>
+				<fieldset>
+					@inputText(loginForm("username"), '_label -> Messages("login.username"))
+	            	@inputPassword(loginForm("password"), '_label -> Messages("login.password"))
+	            	<div class="form-actions">
+	            		<button type="submit" class="btn btn-primary">@Messages("login.login")</button>
+	           		</div>
+				</fieldset>
+			}
+		</div>
+	</div>
+}

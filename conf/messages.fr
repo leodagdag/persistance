@@ -1,2 +1,8 @@
-module.blog.admin=Blog Administration
-blog.admin.list.post.titre=Titre message.fr
+module.admin=Administration
+module.blog=Blog
+module.portfolio=Portfolio
+
+# login
+login.username=Utilisateur
+login.password=Mot de passe
+login.login=Se connecter

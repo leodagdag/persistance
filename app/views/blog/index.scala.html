@@ -1,8 +1,9 @@
-@(count: Long, featured: Option[Post], posts: List[Post])
+@(count: Long, featured: Option[Post], posts: List[Post])(implicit lang: play.api.i18n.Lang)
 
-@import utils.ModulesType
+@import utils.ModuleType
+@import play.api.i18n
 
-@main("Blog",ModulesType.BLOG) {
+@main(Some(ModuleType.BLOG), Some("Blog")) {
 	
 	  @featured match {
 	    case Some(featured) => {

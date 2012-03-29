@@ -1,9 +1,14 @@
-@(message: String)
+@(message: String)(implicit lang: play.api.i18n.Lang)
 
-@import utils.ModulesType
+@import utils.ModuleType
+@import play.api.i18n
 
-@main("Welcome to Play 2.0",ModulesType.HOME) {
-    
-
-    
+@main() {
+	<div class="hero-unit">
+		<h1>Welcome</h1>
+		<p>Tagline</p>
+		<p>
+			<a class="btn btn-primary btn-large">Learn more</a>
+		</p>
+	</div>
 }

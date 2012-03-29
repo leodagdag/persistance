@@ -1,5 +1,8 @@
-@import utils.ModulesType
+@()(implicit lang: play.api.i18n.Lang)
 
-@main("Portfolio",ModulesType.PORTFOLIO) {
+@import utils.ModuleType
+@import play.api.i18n
+
+@main(Some(ModuleType.PORTFOLIO), Some("Portfolio")) {
         // TODO
 }

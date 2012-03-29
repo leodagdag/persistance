@@ -26,7 +26,7 @@ object Portfolios extends Controller {
     */
   def index = Logging {
     Action {
-      Ok(views.html.portfolios.index())
+      TODO
     }
   }
 

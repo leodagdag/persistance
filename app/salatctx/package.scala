@@ -5,7 +5,7 @@ import com.mongodb.casbah.MongoConnection
 import play.api.Logger
 import plugin.MongoDBPlugin
 
-package object utils {
+package object salactx {
 /**
    * Here is where we define the custom Play serialization context, including the Play classloader.
    */

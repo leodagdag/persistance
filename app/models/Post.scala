@@ -4,7 +4,7 @@ import com.novus.salat.dao._
 import com.mongodb.casbah.commons.Imports._
 import controllers.Blog
 import javax.persistence.EntityNotFoundException
-import utils._
+import salactx._
 
 case class Post(_id: ObjectId = new ObjectId,
   title: String,

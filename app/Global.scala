@@ -1,22 +1,31 @@
 import play.api._
 import models._
+import com.mongodb.casbah.commons.MongoDBObject
 
 object Global extends GlobalSettings {
 
-  def createPost = {
+  def createPost {
     Post.collection.drop()
     for (i <- 1 to 12) {
-     // var featured = false
-      var featured = 7.equals(i)
-      Post.save(new Post(title = "titre " + i, featured = featured, content = Some("content " + i)))
-
+      Post.save(Post(title = "titre " + i, featured = 7.equals(i), content = Some("content " + i)))
     }
+  }
+
+  def createUser {
+    User.collection.drop()
+    User.save(User(email = "user@b.com", username = "user", password = "user"))
   }
 
   override def onStart(app: Application) {
     Logger.info("Application start")
     if (app.mode == Mode.Dev) {
+      createUser
       createPost
+    }
+
+    User.find(ref = MongoDBObject("admin" -> true)).limit(1).hasNext match {
+      case false => User.save(User(email = "admin@b.com", username = "admin", password = "admin", admin = true))
+      case _     =>
     }
   }
 

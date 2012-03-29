@@ -1,11 +1,20 @@
-@(title: String, selected: utils.ModulesType)(content: Html)
+@(selected: Option[utils.ModuleType] = None, subtitle: Option[String] = None)(content: Html)(implicit lang: play.api.i18n.Lang)
+
+@import com.google.common.base.Strings
+@import play.api.i18n
+
+@title(subtitle: Option[String]) = @{
+  subtitle match {
+    case Some(subtitle) if !Strings.isNullOrEmpty(subtitle) => (controllers.Application.applicationName + " " + subtitle).trim()
+    case None => controllers.Application.applicationName
+  }
+}
 
 <!DOCTYPE html>
 
 <html>
     <head>
-        <title>@title</title>
-        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
+        <title>@title(subtitle)</title>
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap/bootstrap.min.css")" />
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap/responsive.min.css")" />
         <style type="text/css">

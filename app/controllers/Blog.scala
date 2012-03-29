@@ -9,12 +9,11 @@ import play.api.mvc.Action
 import play.api.i18n.Lang
 import play.api.i18n.Messages
 
-
 /**
- * User: leodagdag
- * Date: 21/03/12
- * Time: 09:48
- */
+  * User: leodagdag
+  * Date: 21/03/12
+  * Time: 09:48
+  */
 
 object Blog extends Controller {
 
@@ -26,7 +25,7 @@ object Blog extends Controller {
   implicit lazy val dao = Post
 
   def index = Logging {
-    Action {
+    Action { implicit request =>
       val count = Post.count()
       val featured = Post.featured
       val posts = Post.byPage(1)
@@ -34,11 +33,4 @@ object Blog extends Controller {
     }
   }
 
-  def admin = Logging {
-    Action {
-      val posts = Post.all
-      Ok(views.html.blog.admin(posts))
-    }
-  }
-  
 }

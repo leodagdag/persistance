@@ -1,7 +1,7 @@
 package models
 
 import org.bson.types.ObjectId
-import utils.ModulesType
+import utils.ModuleType
 
 /**
  * User: leodagdag
@@ -12,7 +12,7 @@ import utils.ModulesType
 case class AppConfig(
                       var name: String,
                       var logoId: Option[ObjectId] = None,
-                      var modules: List[ModulesType] = List(),
+                      var modules: List[ModuleType] = List(),
                       val _id: Option[ObjectId] = None
                       )
 

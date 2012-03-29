@@ -1,31 +1,35 @@
 package controllers
-import play.api.mvc.RequestHeader
-import play.api.mvc.Results
+import play.api.mvc.{ RequestHeader, Results, Security, Result, Request, AnyContent, Action }
+import play.api.Logger
 
 /**
- * Provide security features
- */
+  * Provide security features
+  */
 trait Secured {
-  
-  /**
-   * Retrieve the connected user email.
-   */
-  private def username(request: RequestHeader) = request.session.get("email")
 
   /**
-   * Redirect to login if the user in not authorized.
-   */
+    * Retrieve the connected user email.
+    */
+  private def username(request: RequestHeader) = request.session.get("username")
+
+  /**
+    * Redirect to login if the user in not authorized.
+    */
   private def onUnauthorized(request: RequestHeader) = Results.Redirect(routes.Application.login)
-  
+
   // --
-  
-  /** 
-   * Action for authenticated users.
-   */
+
+  /**
+    * Action for authenticated users.
+    */
   def IsAuthenticated(f: => String => Request[AnyContent] => Result) = Security.Authenticated(username, onUnauthorized) { user =>
+    Logger.debug {
+      "IsAuthenticated ? [%s]".format(user)
+    }
     Action(request => f(user)(request))
   }
 
+  /*
   /**
    * Check if the connected user is a member of this project.
    */
@@ -47,5 +51,5 @@ trait Secured {
       Results.Forbidden
     }
   }
-
+*/
 }
