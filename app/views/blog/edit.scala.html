@@ -1,0 +1,34 @@
+@(id: String, postForm: Form[Post])(implicit lang: play.api.i18n.Lang)
+
+@import helper._
+@import utils.ModuleType
+@import play.api.i18n
+
+@implicitFieldConstructor = @{ FieldConstructor(tags.twitterBootstrapInput.f) }
+
+@main(Some(ModuleType.BLOG), Some("Blog")) {
+  
+	@postForm.globalError.map { error =>
+		<div class="row">
+			<div span="12">
+				<p class="error">@error.message</p>
+			</div>
+		</div>
+	}
+  	<div class="row">
+		<div class="span12">
+			@form(action = routes.Blog.update(id), args = 'class -> "form-horizontal") {
+				<legend>@Messages("blog.edit.legend")</legend>
+				<fieldset>
+					<input type="hidden" name="_id" value="@id">
+					@inputText(postForm("title"), '_label -> Messages("blog.edit.post.title"))
+					@inputText(postForm("content"), '_label -> Messages("blog.edit.post.content"))
+	            	<div class="form-actions">
+						<button type="submit" class="btn btn-primary">@Messages("blog.edit.update")</button>
+						<a class="btn" href="@routes.Blog.show(id.toString())">@Messages("blog.edit.cancel")</a>
+					</div>
+				</fieldset>
+			}
+		</div>
+	</div>
+}

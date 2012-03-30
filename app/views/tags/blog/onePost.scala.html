@@ -1,0 +1,13 @@
+@(post: Post)
+
+@import models.Post
+
+@******************
+* Generate a post *
+*******************@
+<div class="row">
+	<div class="span12">
+		<h2>@post.title</h2>
+		<p>@post.content.getOrElse("")</p>
+	</div>
+</div>

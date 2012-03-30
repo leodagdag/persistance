@@ -1,0 +1,23 @@
+@(post: Post)(implicit flash: Flash, lang: play.api.i18n.Lang)
+
+@import tags.blog._
+@import utils.ModuleType
+@import play.api.i18n
+
+@main(Some(ModuleType.BLOG), Some("Blog")) {
+	@flash.get("success").map { message =>
+		<div class="alert alert-success fade in">
+			<a class="close" data-dismiss="alert" href="#">×</a>
+			@message
+		</div>
+  	}
+  			
+	@onePost(post)
+	<div class="row">
+		<div class="span12">
+			<div class="form-actions">
+				<a class="btn" href="@routes.Blog.edit(post._id.toString())">@Messages("blog.show.edit")</a>
+			</div>
+		</div>
+	</div>
+}

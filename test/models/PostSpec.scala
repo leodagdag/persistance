@@ -86,6 +86,7 @@ class PostSpec extends Specification {
 
     "update" in {
       running(FakeApplication()) {
+        Post.findOneByID(savedId).get.title mustNotEqual "new Title"
         val newPost = Post.findOneByID(savedId).get
         val cr = Post.update(MongoDBObject("_id" -> savedId), newPost.copy(title = "new Title"), false, false, Post.collection.writeConcern)
         cr mustEqual ()

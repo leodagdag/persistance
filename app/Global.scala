@@ -6,8 +6,12 @@ object Global extends GlobalSettings {
 
   def createPost {
     Post.collection.drop()
-    for (i <- 1 to 12) {
-      Post.save(Post(title = "titre " + i, featured = 7.equals(i), content = Some("content " + i)))
+    
+    val comment:Comment = Comment(content = "Comment's content")
+    Comment.save(comment)
+    
+    for (i <- 1 to 1) {
+      Post.save(Post(title = "titre " + i, featured = 7.equals(i), content = Some("content " + i), comments = List(comment)))
     }
   }
 

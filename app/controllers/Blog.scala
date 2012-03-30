@@ -1,19 +1,25 @@
 package controllers
 
-import play.api.mvc.Controller
-import utils.Logging
-import play.api.Configuration
 import play.api.Play.current
+import play.api._
+import play.api.i18n._
+import play.api.mvc._
+import play.api.data._
+import play.api.data.Forms._
+
+import org.bson.types.ObjectId
+import com.mongodb.casbah.commons.MongoDBObject
+import com.mongodb.casbah.Imports._
+
+import utils._
 import models._
-import play.api.mvc.Action
-import play.api.i18n.Lang
-import play.api.i18n.Messages
+import views._
 
 /**
-  * User: leodagdag
-  * Date: 21/03/12
-  * Time: 09:48
-  */
+ * User: leodagdag
+ * Date: 21/03/12
+ * Time: 09:48
+ */
 
 object Blog extends Controller {
 
@@ -24,13 +30,60 @@ object Blog extends Controller {
 
   implicit lazy val dao = Post
 
+  val postForm = Form(
+    mapping(
+      "_id" -> optional(text),
+      "title" -> nonEmptyText,
+      "content" -> optional(text),
+      "featured" -> boolean)(
+        (_id, title, content, featured) => Post(_id = ObjectId.massageToObjectId(_id), title = title, content = content, featured = featured))(
+          (post: Post) => Some(Some(post._id.toString()), post.title, post.content, post.featured)))
+
   def index = Logging {
     Action { implicit request =>
       val count = Post.count()
       val featured = Post.featured
-      val posts = Post.byPage(1)
-      Ok(views.html.blog.index(count, featured, posts))
+      val posts = models.Post.byPage(1)
+      Ok(html.blog.index(count, featured, posts))
     }
+  }
+
+  def show(id: String) = Logging {
+    Action { implicit request =>
+      val post = Post.findOneByID(ObjectId.massageToObjectId(id))
+      post match {
+        case Some(post) => Ok(html.blog.show(post))
+        case None => NotFound
+      }
+
+    }
+  }
+
+  def edit(id: String) = Logging {
+    Action { implicit request =>
+      val post = Post.findOneByID(ObjectId.massageToObjectId(id))
+      post match {
+        case Some(post) => Ok(html.blog.edit(post._id.toString(), postForm.fill(post)))
+        case None => NotFound
+      }
+    }
+  }
+
+  def update(id: String) = Logging {
+    Action { implicit request =>
+      postForm.bindFromRequest.fold(
+        formWithErrors => BadRequest(html.blog.edit(id, formWithErrors)),
+        updPost => {
+          val post = Post.findOneByID(ObjectId.massageToObjectId(id))
+          post match {
+            case Some(post) =>
+              Post.update(MongoDBObject("_id" -> Some(post._id)), post.simpleCopy(updPost), false, false, new WriteConcern())
+              Redirect(routes.Blog.show(id)).flashing("success" -> "Post %s has been updated".format(post.title))
+            case None => NotFound
+          }
+        })
+    }
+
   }
 
 }

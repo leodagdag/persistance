@@ -6,14 +6,19 @@
 GET     /                           controllers.Application.index
 
 # Authentication
-GET     /login                              controllers.Application.login
-POST    /login                              controllers.Application.authenticate
-GET     /logout                             controllers.Application.logout
+GET     /login                      controllers.Application.login
+POST    /login                      controllers.Application.authenticate
+GET     /logout                     controllers.Application.logout
 
 # Portfolio
 GET     /portfolio                  controllers.Portfolios.index
+
 # Blog
 GET     /blog                       controllers.Blog.index
+GET		/blog/:id					controllers.Blog.show(id: String)
+GET		/blog/:id/edit				controllers.Blog.edit(id: String)
+POST	/blog/:id/update			controllers.Blog.update(id: String)
+
 # Administration
 GET     /admin		                controllers.Administration.index
 

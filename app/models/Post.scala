@@ -9,10 +9,19 @@ import salactx._
 case class Post(_id: ObjectId = new ObjectId,
   title: String,
   content: Option[String] = None,
-  featured: Boolean = false, 
-  var comments: List[Comment] = null)
+  featured: Boolean = false,
+  var comments: List[Comment] = null){
+  def simpleCopy(src: Post): Post = {
+    this.copy(title = src.title, 
+        content = src.content,
+        featured = src.featured)
+  }
+}
 
 object Post extends SalatDAO[Post, ObjectId](collection = DB.connection("Post")) with Model[Post] {
+
+  com.mongodb.casbah.commons.conversions.scala.RegisterConversionHelpers()
+  com.mongodb.casbah.commons.conversions.scala.RegisterJodaTimeConversionHelpers()
 
   override val PAGE_SIZE = Blog.config.getInt("pageSize").getOrElse(10)
 
@@ -20,7 +29,7 @@ object Post extends SalatDAO[Post, ObjectId](collection = DB.connection("Post"))
     val post = this.findOneByID(id)
     post match {
       case Some(post) =>
-        if(post.comments == null) { 
+        if (post.comments == null) {
           post.comments = List(comment)
         } else {
           post.comments = post.comments.+:(comment)
@@ -29,10 +38,10 @@ object Post extends SalatDAO[Post, ObjectId](collection = DB.connection("Post"))
       case _ => throw new EntityNotFoundException("Problem retrieving a post with id[%s]".format(id))
     }
   }
-  
+
   def featured = {
     val featured = Post.findOne(MongoDBObject("featured" -> true))
     featured
   }
-  
+
 }
