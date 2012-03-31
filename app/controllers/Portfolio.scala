@@ -1,19 +1,18 @@
 package controllers
 
-import utils.Logging
-import play.api.mvc.{ Action, Controller }
+import play.api.mvc.{Action, Controller}
 import org.bson.types.ObjectId
 import play.api.data.Forms._
 import play.api.data.Form
 import models._
 
 /**
-  * User: f.patin
-  * Date: 13/03/12
-  * Time: 17:26
-  */
+ * User: f.patin
+ * Date: 13/03/12
+ * Time: 17:26
+ */
 
-object Portfolios extends Controller {
+object Portfolio extends Controller with Secured {
 
   /*
   val portfolioForm = Form(
@@ -26,7 +25,8 @@ object Portfolios extends Controller {
     */
   def index = Logging {
     Action {
-      TODO
+      implicit request =>
+        Ok(views.html.portfolio.index())
     }
   }
 

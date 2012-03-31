@@ -21,7 +21,7 @@ import views._
  * Time: 09:48
  */
 
-object Blog extends Controller {
+object Blog extends Controller with Secured {
 
   lazy val config: Configuration = Application.config.get.getConfig("blog").getOrElse {
     current.configuration.globalError("app.blog config is missing")
@@ -36,54 +36,63 @@ object Blog extends Controller {
       "title" -> nonEmptyText,
       "content" -> optional(text),
       "featured" -> boolean)(
-        (_id, title, content, featured) => Post(_id = ObjectId.massageToObjectId(_id), title = title, content = content, featured = featured))(
-          (post: Post) => Some(Some(post._id.toString()), post.title, post.content, post.featured)))
+      (_id, title, content, featured) => Post(_id = ObjectId.massageToObjectId(_id), title = title, content = content, featured = featured))(
+      (post: Post) => Some(Some(post._id.toString()), post.title, post.content, post.featured)))
 
   def index = Logging {
-    Action { implicit request =>
-      val count = Post.count()
-      val featured = Post.featured
-      val posts = models.Post.byPage(1)
-      Ok(html.blog.index(count, featured, posts))
+    Action {
+      implicit request =>
+        val count = Post.count()
+        val featured = Post.featured
+        val posts = models.Post.byPage(1)
+        Ok(html.blog.index(count, featured, posts))
     }
   }
 
   def show(id: String) = Logging {
-    Action { implicit request =>
-      val post = Post.findOneByID(ObjectId.massageToObjectId(id))
-      post match {
-        case Some(post) => Ok(html.blog.show(post))
-        case None => NotFound
-      }
+    Action {
+      implicit request =>
+        val post = Post.findOneByID(ObjectId.massageToObjectId(id))
+        post match {
+          case Some(post) => Ok(html.blog.show(post))
+          case None => NotFound
+        }
 
     }
   }
 
   def edit(id: String) = Logging {
-    Action { implicit request =>
-      val post = Post.findOneByID(ObjectId.massageToObjectId(id))
-      post match {
-        case Some(post) => Ok(html.blog.edit(post._id.toString(), postForm.fill(post)))
-        case None => NotFound
-      }
+    IsAuthenticated {
+      username =>
+        Action {
+          implicit request =>
+            val post = Post.findOneByID(ObjectId.massageToObjectId(id))
+            post match {
+              case Some(post) => Ok(html.blog.edit(post._id.toString(), postForm.fill(post)))
+              case None => NotFound
+            }
+        }
     }
   }
 
   def update(id: String) = Logging {
-    Action { implicit request =>
-      postForm.bindFromRequest.fold(
-        formWithErrors => BadRequest(html.blog.edit(id, formWithErrors)),
-        updPost => {
-          val post = Post.findOneByID(ObjectId.massageToObjectId(id))
-          post match {
-            case Some(post) =>
-              Post.update(MongoDBObject("_id" -> Some(post._id)), post.simpleCopy(updPost), false, false, new WriteConcern())
-              Redirect(routes.Blog.show(id)).flashing("success" -> "Post %s has been updated".format(post.title))
-            case None => NotFound
-          }
-        })
+    IsAuthenticated {
+      username =>
+        Action {
+          implicit request =>
+            postForm.bindFromRequest.fold(
+              formWithErrors => BadRequest(html.blog.edit(id, formWithErrors)),
+              updPost => {
+                val post = Post.findOneByID(ObjectId.massageToObjectId(id))
+                post match {
+                  case Some(post) =>
+                    Post.update(MongoDBObject("_id" -> Some(post._id)), post.simpleCopy(updPost), false, false, new WriteConcern())
+                    Redirect(routes.Blog.show(id)).flashing("success" -> "Post %s has been updated".format(post.title))
+                  case None => NotFound
+                }
+              })
+        }
     }
-
   }
 
 }

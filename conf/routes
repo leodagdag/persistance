@@ -11,7 +11,7 @@ POST    /login                      controllers.Application.authenticate
 GET     /logout                     controllers.Application.logout
 
 # Portfolio
-GET     /portfolio                  controllers.Portfolios.index
+GET     /portfolio                  controllers.Portfolio.index
 
 # Blog
 GET     /blog                       controllers.Blog.index

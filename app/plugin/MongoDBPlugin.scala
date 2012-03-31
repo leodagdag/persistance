@@ -42,7 +42,7 @@ object MongoDBPlugin {
     Logger.debug("getGridFS()")
     app.plugin[MongoDBPlugin].map(_.gridFS).getOrElse(error)
   }
-  
+
   def collection(name: String)(implicit app: Application): MongoCollection = {
     Logger.debug("getCollection(%s)".format(name))
     app.plugin[MongoDBPlugin].map(_.getCollection(name)).getOrElse(error)
@@ -52,8 +52,7 @@ object MongoDBPlugin {
     Logger.debug("connexion")
     app.plugin[MongoDBPlugin].map(_.mongoDB).getOrElse(error)
   }
-  
-  
+
 
 }
 

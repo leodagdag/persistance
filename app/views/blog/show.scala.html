@@ -1,8 +1,7 @@
-@(post: Post)(implicit flash: Flash, lang: play.api.i18n.Lang)
+@(post: Post)(implicit flash: Flash, lang: play.api.i18n.Lang, user: Option[User])
 
 @import tags.blog._
 @import utils.ModuleType
-@import play.api.i18n
 
 @main(Some(ModuleType.BLOG), Some("Blog")) {
 	@flash.get("success").map { message =>

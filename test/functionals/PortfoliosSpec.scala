@@ -12,7 +12,7 @@ import play.api.test.{FakeRequest, FakeApplication}
 
 class PortfoliosSpec extends Specification {
   /*
-  "Portfolios" should {
+  "Portfolio$" should {
     "Action index" in {
       running(FakeApplication()) {
         val Some(result) = routeAndCall(FakeRequest(GET, "/portfolio"))

@@ -6,7 +6,7 @@ import play.api.Logger
 import plugin.MongoDBPlugin
 
 package object salactx {
-/**
+  /**
    * Here is where we define the custom Play serialization context, including the Play classloader.
    */
   implicit val ctx = {
@@ -17,10 +17,11 @@ package object salactx {
     Logger.debug("New context registration done!")
     c
   }
-  
+
   object DB {
     //val connection = MongoConnection()("dev")
     val connection = MongoDBPlugin.connection
-    
+
   }
+
 }

@@ -13,12 +13,12 @@ case class User(_id: ObjectId = new ObjectId,
                 firstName: Option[String] = None,
                 lastName: Option[String] = None,
                 bio: Option[String] = None) {
-  def fullName(firstName: Option[String], lastName: Option[String]) = {
-    val fullname = List(firstName.getOrElse(""), lastName.getOrElse("")).filter(!"".equals(_)).map(_.capitalize)
+  lazy val fullname = {
+    val fullname = List(this.firstName.getOrElse(""), this.lastName.getOrElse("")).filter(!"".equals(_)).map(_.capitalize)
 
     fullname.isEmpty match {
       case false => fullname.mkString(" ").trim()
-      case _     => ""
+      case _ => ""
     }
   }
 }
@@ -26,6 +26,11 @@ case class User(_id: ObjectId = new ObjectId,
 object User extends SalatDAO[User, ObjectId](collection = DB.connection("User")) with Model[User] {
 
   def authenticate(username: String, password: String): Option[User] = {
-    this.findOne(MongoDBObject("username" -> username, "username" -> username))
+    this.findOne(MongoDBObject("username" -> username, "password" -> password))
   }
+
+  def byUsername(username: String): User = {
+    this.findOne(MongoDBObject("username" -> username)).get
+  }
+
 }

@@ -1,8 +1,15 @@
-module.admin=Administration
-module.blog=Blog
-module.portfolio=Portfolio
-
+# Navigation
+navigation.administration=Administration
+navigation.blog=Blog
+navigation.portfolio=Portfolio
+navigation.login=Login
+navigation.logout=Logout
 # login
 login.username=User name
 login.password=Password
 login.login=Login
+login.signin=Sign in
+
+# commentaires
+comment.by=par
+commant.at=at

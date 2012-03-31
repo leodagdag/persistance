@@ -1,0 +1,13 @@
+@(comments: List[Comment])(implicit flash: Flash, lang: play.api.i18n.Lang, user: Option[User])
+
+@for(comment <- comments) {
+    <div class="row">
+        <div class="span12">
+            <blockquote>
+                <p>@comment.content</p>
+                <small>@Messages("comment.by") @comment.user.fullname, @Messages("comment.at") @comment.created.toDate().format("dd/MM/yyyy")</small>
+            </blockquote>
+        </div>
+    </div>
+}
+

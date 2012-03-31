@@ -10,5 +10,5 @@ case class Media(_id: ObjectId = new ObjectId,
                  var description: Option[String] = None)
 
 object Media extends SalatDAO[Media, ObjectId](collection = DB.connection("Media")) with Model[Media] {
-  
+
 }

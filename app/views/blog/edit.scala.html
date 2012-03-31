@@ -1,8 +1,7 @@
-@(id: String, postForm: Form[Post])(implicit lang: play.api.i18n.Lang)
+@(id: String, postForm: Form[Post])(implicit flash: Flash, lang: play.api.i18n.Lang, user: Option[User])
 
 @import helper._
 @import utils.ModuleType
-@import play.api.i18n
 
 @implicitFieldConstructor = @{ FieldConstructor(tags.twitterBootstrapInput.f) }
 

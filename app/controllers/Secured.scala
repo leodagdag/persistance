@@ -1,32 +1,34 @@
 package controllers
-import play.api.mvc.{ RequestHeader, Results, Security, Result, Request, AnyContent, Action }
+
+import play.api.mvc.{RequestHeader, Results, Security, Result, Request, AnyContent, Action}
 import play.api.Logger
 
 /**
-  * Provide security features
-  */
-trait Secured {
+ * Provide security features
+ */
+trait Secured extends Users {
 
   /**
-    * Retrieve the connected user email.
-    */
+   * Retrieve the connected user email.
+   */
   private def username(request: RequestHeader) = request.session.get("username")
 
   /**
-    * Redirect to login if the user in not authorized.
-    */
+   * Redirect to login if the user in not authorized.
+   */
   private def onUnauthorized(request: RequestHeader) = Results.Redirect(routes.Application.login)
 
   // --
 
   /**
-    * Action for authenticated users.
-    */
-  def IsAuthenticated(f: => String => Request[AnyContent] => Result) = Security.Authenticated(username, onUnauthorized) { user =>
-    Logger.debug {
-      "IsAuthenticated ? [%s]".format(user)
-    }
-    Action(request => f(user)(request))
+   * Action for authenticated users.
+   */
+  def IsAuthenticated(f: => String => Request[AnyContent] => Result) = Security.Authenticated(username, onUnauthorized) {
+    user =>
+      Logger.debug {
+        "IsAuthenticated ? [%s]".format(user)
+      }
+      Action(request => f(user)(request))
   }
 
   /*

@@ -1,7 +1,7 @@
-@(selected: Option[utils.ModuleType] = None)(implicit lang: play.api.i18n.Lang)
+@(selected: Option[utils.ModuleType] = None)(implicit flash: Flash, lang: play.api.i18n.Lang, user: Option[User])
 
 @import utils.ModuleType
-@import play.api.i18n
+@import helpers.Template._
 
 <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
@@ -14,11 +14,33 @@
             <a class="brand" href="@routes.Application.index()">Persistance</a>
             <div class="nav-collapse">
                 <ul class="nav">
-                    <li @if(ModuleType.PORTFOLIO.equals(selected)){ class="active"} ><a href="@routes.Portfolios.index()">@Messages(ModuleType.PORTFOLIO.i18nKey)</a></li>
-                    <li @if(ModuleType.BLOG.equals(selected)){ class="active"}><a href="@routes.Blog.index()">@Messages(ModuleType.BLOG.i18nKey)</a></li>
+                    <li @if(ModuleType.PORTFOLIO.equals(selected.getOrElse(None))){ class="active"} ><a href="@routes.Portfolio.index()">@Messages("navigation.portfolio")</a></li>
+                    <li @if(ModuleType.BLOG.equals(selected.getOrElse(None))){ class="active"}><a href="@routes.Blog.index()">@Messages("navigation.blog")</a></li>
                 </ul>
                 <ul class="nav pull-right">
-                    <li @if(ModuleType.ADMINISTRATION.equals(selected)){ class="active"}><a href="@routes.Administration.index()">@Messages(ModuleType.ADMINISTRATION.i18nKey)</a></li>
+                    @user match{
+                        case Some(user) => {
+                            <li @if(ModuleType.ADMINISTRATION.equals(selected.getOrElse(None))){ class="active"}><a href="@routes.Administration.index()">@Messages("navigation.administration")</a></li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    @user.fullname
+                                    <b class="caret"></b>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a href="@routes.Application.logout">@Messages("navigation.logout")</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+                        case None => {
+                            <li>
+                                <a href="@routes.Application.login()" class="dropdown-toggle" data-toggle="dropdown">
+                                    @Messages("navigation.login")
+                                </a>
+                            </li>
+                        }
+                    }
                 </ul>
             </div><!--/.nav-collapse -->
         </div>

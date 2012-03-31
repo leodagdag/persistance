@@ -1,14 +1,10 @@
-@(message: String)(implicit lang: play.api.i18n.Lang)
+@(message: String)(implicit flash: Flash, lang: play.api.i18n.Lang, user: Option[User])
 
 @import utils.ModuleType
-@import play.api.i18n
 
 @main() {
 	<div class="hero-unit">
 		<h1>Welcome</h1>
 		<p>Tagline</p>
-		<p>
-			<a class="btn btn-primary btn-large">Learn more</a>
-		</p>
 	</div>
 }

@@ -7,14 +7,14 @@ import javax.persistence.EntityNotFoundException
 import salactx._
 
 case class Post(_id: ObjectId = new ObjectId,
-  title: String,
-  content: Option[String] = None,
-  featured: Boolean = false,
-  var comments: List[Comment] = null){
+                title: String,
+                content: Option[String] = None,
+                featured: Boolean = false,
+                var comments: List[Comment] = null) {
   def simpleCopy(src: Post): Post = {
-    this.copy(title = src.title, 
-        content = src.content,
-        featured = src.featured)
+    this.copy(title = src.title,
+      content = src.content,
+      featured = src.featured)
   }
 }
 

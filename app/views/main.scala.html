@@ -1,7 +1,6 @@
-@(selected: Option[utils.ModuleType] = None, subtitle: Option[String] = None)(content: Html)(implicit lang: play.api.i18n.Lang)
+@(selected: Option[utils.ModuleType] = None, subtitle: Option[String] = None)(content: Html)(implicit flash: Flash, lang: play.api.i18n.Lang, user: Option[User])
 
 @import com.google.common.base.Strings
-@import play.api.i18n
 
 @title(subtitle: Option[String]) = @{
   subtitle match {
@@ -32,6 +31,7 @@
         	@content
 		</div>
         <script type="text/javascript" src="@routes.Assets.at("bootstrap/js/bootstrap-alert.js")"></script>
+        <script type="text/javascript" src="@routes.Assets.at("bootstrap/js/bootstrap-dropdown.js")"></script>
         <script type="text/javascript" src="@routes.Assets.at("javascripts/main.js")"></script>
     </body>
 </html>

@@ -1,6 +1,7 @@
-@(post: Post)
+@(post: Post)(implicit flash: Flash, lang: play.api.i18n.Lang, user: Option[User])
 
 @import models.Post
+@import tags._
 
 @******************
 * Generate a post *
@@ -11,3 +12,4 @@
 		<p>@post.content.getOrElse("")</p>
 	</div>
 </div>
+@comments(post.comments)
