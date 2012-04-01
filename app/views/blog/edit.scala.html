@@ -22,6 +22,11 @@
 					<input type="hidden" name="_id" value="@id">
 					@inputText(postForm("title"), '_label -> Messages("blog.edit.post.title"))
 					@inputText(postForm("content"), '_label -> Messages("blog.edit.post.content"))
+                    @checkbox(
+                        postForm("featured"),
+                        '_label -> Messages("blog.edit.post.featured"),
+                        '_showConstraints -> false
+                    )
 	            	<div class="form-actions">
 						<button type="submit" class="btn btn-primary">@Messages("blog.edit.update")</button>
 						<a class="btn" href="@routes.Blog.show(id.toString())">@Messages("blog.edit.cancel")</a>

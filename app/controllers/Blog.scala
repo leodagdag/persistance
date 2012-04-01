@@ -14,6 +14,7 @@ import com.mongodb.casbah.Imports._
 import utils._
 import models._
 import views._
+import org.joda.time.DateTime
 
 /**
  * User: leodagdag
@@ -35,9 +36,26 @@ object Blog extends Controller with Secured {
       "_id" -> optional(text),
       "title" -> nonEmptyText,
       "content" -> optional(text),
-      "featured" -> boolean)(
-      (_id, title, content, featured) => Post(_id = ObjectId.massageToObjectId(_id), title = title, content = content, featured = featured))(
-      (post: Post) => Some(Some(post._id.toString()), post.title, post.content, post.featured)))
+      "authorId" -> text,
+      "created" -> date,
+      "featured" -> boolean)
+      ((_id, title, content, authorId, created, featured) =>
+        Post(
+          _id = ObjectId.massageToObjectId(_id),
+          title = title,
+          content = content,
+          authorId =  ObjectId.massageToObjectId(authorId),
+          created = new DateTime(created),
+          featured = featured))
+      ((post: Post) =>
+        Some(
+          Some(post._id.toString),
+          post.title,
+          post.content,
+          post.authorId.toString,
+          post.created.toDate,
+          post.featured))
+  )
 
   def index = Logging {
     Action {

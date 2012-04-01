@@ -11,13 +11,18 @@ object Global extends GlobalSettings {
   }
 
   def createPost {
-    Post.collection.drop()
+    Post.collection.drop
+    var comments: List[Comment] = List.empty
+    (1 to 10).foreach {
+      i =>
+        comments = comments :+ Comment(content = "Comment's content " + i, user = User.findOne(MongoDBObject("username" -> "user")).get)
+    }
+    comments.foreach(c => Comment.save(c))
 
-    val comment: Comment = Comment(content = "Comment's content", user = User.findOne(MongoDBObject("username" -> "user")).get)
-    Comment.save(comment)
-
-    for (i <- 1 to 1) {
-      Post.save(Post(title = "titre " + i, featured = 7.equals(i), content = Some("content " + i), comments = List(comment)))
+    val id = User.findOne(MongoDBObject("username" -> "admin")).get._id
+    (1 to 5).foreach {
+      i =>
+        Post.save(Post(title = "titre " + i, featured = 7.equals(i), content = Some("content " + i), authorId = id, comments = comments))
     }
   }
 

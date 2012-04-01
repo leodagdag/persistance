@@ -65,7 +65,7 @@ object Application extends Controller with Secured {
   def logout = Logging {
     Action {
       implicit request =>
-        Redirect(routes.Application.login).withNewSession.flashing(
+        Redirect(routes.Application.index).withNewSession.flashing(
           "success" -> "You've been logged out")
     }
   }

@@ -1,6 +1,6 @@
 @(post: Post)(implicit flash: Flash, lang: play.api.i18n.Lang, user: Option[User])
 
-@import tags.blog._
+@import plugin.Template._
 @import utils.ModuleType
 
 @main(Some(ModuleType.BLOG), Some("Blog")) {
@@ -10,13 +10,24 @@
 			@message
 		</div>
   	}
-  			
-	@onePost(post)
-	<div class="row">
-		<div class="span12">
-			<div class="form-actions">
-				<a class="btn" href="@routes.Blog.edit(post._id.toString())">@Messages("blog.show.edit")</a>
-			</div>
-		</div>
-	</div>
+
+    <div class="row">
+        <div class="span12">
+            <h2>@post.title</h2>
+            <h5>@Messages("post.by") @getUser(post.authorId).fullname, @Messages("post.at") @formatDate(post.created)
+                @user match {
+                    case Some(user) => {
+                        @if(post.authorId.equals(user._id)) {
+                            <a class="btn btn-mini" href="@routes.Blog.edit(post._id.toString())" title="@Messages("post.edit")"><i class="icon-pencil"></i></a>
+                        }
+                    }
+                    case None => {
+                    }
+                }
+            </h5>
+            <p>@post.content.getOrElse("")</p>
+        </div>
+    </div>
+
+    @tags.comments(post.comments)
 }

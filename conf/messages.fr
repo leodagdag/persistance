@@ -4,11 +4,19 @@ navigation.blog=Blog
 navigation.portfolio=Portfolio
 navigation.login=Se connecter
 navigation.logout=Se déconnecter
-# login
+
+# Login
 login.username=Utilisateur
 login.password=Mot de passe
 login.login=Se connecter
 login.signin=Connexion
-# commentaires
+
+# Post
+post.by=par
+post.at=le
+post.edit=Editer l'article
+
+# Comment
 comment.by=par
 comment.at=le
+comment.since=depuis

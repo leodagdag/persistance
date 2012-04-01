@@ -5,10 +5,13 @@ import com.mongodb.casbah.commons.Imports._
 import controllers.Blog
 import javax.persistence.EntityNotFoundException
 import salactx._
+import org.joda.time.DateTime
 
 case class Post(_id: ObjectId = new ObjectId,
                 title: String,
                 content: Option[String] = None,
+                authorId: ObjectId,
+                created: DateTime = new DateTime(),
                 featured: Boolean = false,
                 var comments: List[Comment] = null) {
   def simpleCopy(src: Post): Post = {

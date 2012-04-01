@@ -52,10 +52,13 @@ class PostSpec extends Specification {
     "create 12 Posts" in {
       running(FakeApplication()) {
         var post: Post = null
-        for (i <- 1 to 12) {
-          post = Post(title = "titre" + i)
-          Post.save(post)
-          if (i == 12) { deleteId = post._id }
+        (1 to 12) {
+          i =>
+            post = Post(title = "titre" + i)
+            Post.save(post)
+            if (i == 12) {
+              deleteId = post._id
+            }
         }
         Post.count() mustEqual 13
       }
@@ -89,7 +92,7 @@ class PostSpec extends Specification {
         Post.findOneByID(savedId).get.title mustNotEqual "new Title"
         val newPost = Post.findOneByID(savedId).get
         val cr = Post.update(MongoDBObject("_id" -> savedId), newPost.copy(title = "new Title"), false, false, Post.collection.writeConcern)
-        cr mustEqual ()
+        cr mustEqual()
         Post.findOneByID(savedId).get.title mustEqual "new Title"
       }
     }
