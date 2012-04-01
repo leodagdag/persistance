@@ -6,6 +6,7 @@ import play.api.i18n._
 import play.api.mvc._
 import play.api.data._
 import play.api.data.Forms._
+import play.api.data.format.Formats._
 
 import org.bson.types.ObjectId
 import com.mongodb.casbah.commons.MongoDBObject
@@ -31,31 +32,27 @@ object Blog extends Controller with Secured {
 
   implicit lazy val dao = Post
 
-  val postForm = Form(
-    mapping(
-      "_id" -> optional(text),
-      "title" -> nonEmptyText,
-      "content" -> optional(text),
-      "authorId" -> text,
-      "created" -> date,
-      "featured" -> boolean)
-      ((_id, title, content, authorId, created, featured) =>
-        Post(
-          _id = ObjectId.massageToObjectId(_id),
-          title = title,
-          content = content,
-          authorId =  ObjectId.massageToObjectId(authorId),
-          created = new DateTime(created),
-          featured = featured))
-      ((post: Post) =>
-        Some(
-          Some(post._id.toString),
-          post.title,
-          post.content,
-          post.authorId.toString,
-          post.created.toDate,
-          post.featured))
-  )
+
+  val postForm =
+    Form(
+      mapping(
+        "_id" -> optional(text),
+        "title" -> nonEmptyText,
+        "content" -> nonEmptyText,
+        "featured" -> boolean)
+        ((_id, title, content, featured) =>
+          Post(
+            _id = ObjectId.massageToObjectId(_id),
+            title = title,
+            content = content,
+            featured = featured))
+        ((post: Post) =>
+          Some(
+            Some(post._id.toString),
+            post.title,
+            post.content,
+            post.featured))
+    )
 
   def index = Logging {
     Action {
@@ -98,12 +95,14 @@ object Blog extends Controller with Secured {
       username =>
         Action {
           implicit request =>
-            postForm.bindFromRequest.fold(
+            var p =    postForm.bindFromRequest
+            p.fold(
               formWithErrors => BadRequest(html.blog.edit(id, formWithErrors)),
               updPost => {
                 val post = Post.findOneByID(ObjectId.massageToObjectId(id))
                 post match {
                   case Some(post) =>
+                    post.copy(authorId = Some(user.get._id))
                     Post.update(MongoDBObject("_id" -> Some(post._id)), post.simpleCopy(updPost), false, false, new WriteConcern())
                     Redirect(routes.Blog.show(id)).flashing("success" -> "Post %s has been updated".format(post.title))
                   case None => NotFound

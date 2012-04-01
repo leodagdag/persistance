@@ -9,7 +9,7 @@
 		  <div class="hero-unit">
 		  	<h1>@featured.title</h1>  
 		  	<p>@featured.content</p>
-	    	<p><a class="btn btn-primary btn-large">Learn more »</a></p>
+	    	<p><a class="btn btn-primary btn-large" href="@routes.Blog.show(featured._id.toString())">Learn more »</a></p>
 		  </div>
 	    }
 	    case None => {
@@ -21,7 +21,7 @@
 		<div class="row">
 			<div class="span12">
 				<h2>@post.title</h2>
-				<p>@post.content.get</p>
+				<p>@post.content</p>
 				<p><a class="btn" href="@routes.Blog.show(post._id.toString())">Learn more »</a></p>
 			</div>
 		</div>

@@ -12,7 +12,7 @@ import utils.ModuleType
 case class AppConfig(
                       var name: String,
                       var logoId: Option[ObjectId] = None,
-                      var modules: List[ModuleType] = List(),
+                      var modules: List[ModuleType] = Nil,
                       val _id: Option[ObjectId] = None
                       )
 

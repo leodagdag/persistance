@@ -22,7 +22,7 @@ object Global extends GlobalSettings {
     val id = User.findOne(MongoDBObject("username" -> "admin")).get._id
     (1 to 5).foreach {
       i =>
-        Post.save(Post(title = "titre " + i, featured = 7.equals(i), content = Some("content " + i), authorId = id, comments = comments))
+        Post.save(Post(title = "titre " + i, featured = 3.equals(i), content = ("content " + i), authorId = Some(id), comments = comments))
     }
   }
 

@@ -10,8 +10,6 @@ import play.api.mvc.Session
  */
 
 trait Users {
-  implicit def user(implicit session: Session): Option[User] = {
-    for (username <- session.get("username")) yield User.byUsername(username)
-  }
+
 
 }

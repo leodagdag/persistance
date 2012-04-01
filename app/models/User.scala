@@ -29,8 +29,9 @@ object User extends SalatDAO[User, ObjectId](collection = DB.connection("User"))
     this.findOne(MongoDBObject("username" -> username, "password" -> password))
   }
 
-  def byUsername(username: String): User = {
-    this.findOne(MongoDBObject("username" -> username)).get
+  def byUsername(username: String): Option[User] = {
+    val u = this.findOne(MongoDBObject("username" -> username))
+    u
   }
 
 }

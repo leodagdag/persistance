@@ -2,7 +2,7 @@ package plugin
 
 import play.api.i18n._
 import models.User
-import org.bson.types.ObjectId
+import com.mongodb.casbah.commons.Imports._
 import play.api.Configuration
 import play.api.Play._
 import org.joda.time.{Period, Duration, DateTime}
@@ -19,27 +19,40 @@ object Template {
 
   private lazy val pattern: String = current.configuration.getString("date.format").getOrElse("dd/MM/yyyy")
 
-  private val suffix = Map("en" -> List(" year ", " years ", " month ", "months ", " day", " days ", "hour", " hours ", " minute", " minutes ", " seconde ", "secondes "),
-    "fr" -> List(" année ", " années ", " mois ", " mois ", " jour ", " jours ", " heure ", " heures ", " minute ", " minutes ", " seconde ", " secondes "))
-
-
 
   private lazy val pf: PeriodFormatter = {
-    val lang = Lang.defaultLang.language
+
+    val suffix =
+      """
+      en=y:year,years|M:month,months|d:day,days|h:hour,hours|m:minute,minutes|s:seconde,secondes
+      fr=y:année,années|M:mois,mois|d:jour,jours|h:heure,heures|m:minute,minutes|s:seconde,secondes
+      """.split('\n').map(_.trim).filter(_.size > 0).map(_.split('=')).map {
+        line: Array[String] => // ["en","y:year,years|M:month,months|d:day,days|h:hour,hours|m:minute,minutes|s:seconde,secondes"]
+          Symbol(line(0)) -> line(1).split('|').map {
+            period: String => // "y:year,years"
+              Symbol(period(0).toString) -> period.drop(2).mkString
+          }.toMap.map {
+            words: Tuple2[Symbol, String] => // ('y,"year,years")(Symbol, String)
+              val word: Array[String] = words._2.split(',').map(" " + _ + " ")
+              words._1 -> Tuple2(word(0), word(1))
+          }.toMap
+      }.toMap
+
+    val lang = Symbol(Lang.defaultLang.language)
     new PeriodFormatterBuilder()
       .printZeroRarelyLast()
       .appendYears()
-      .appendSuffix(suffix.get(lang).get(0), suffix.get(lang).get(1))
+      .appendSuffix(suffix.get(lang).get('y)._1, suffix.get(lang).get('y)._2)
       .appendMonths()
-      .appendSuffix(suffix.get(lang).get(2), suffix.get(lang).get(3))
+      .appendSuffix(suffix.get(lang).get('M)._1, suffix.get(lang).get('M)._2)
       .appendDays()
-      .appendSuffix(suffix.get(lang).get(4), suffix.get(lang).get(5))
+      .appendSuffix(suffix.get(lang).get('d)._1, suffix.get(lang).get('d)._2)
       .appendHours()
-      .appendSuffix(suffix.get(lang).get(6), suffix.get(lang).get(8))
+      .appendSuffix(suffix.get(lang).get('h)._1, suffix.get(lang).get('h)._2)
       .appendMinutes()
-      .appendSuffix(suffix.get(lang).get(8), suffix.get(lang).get(9))
+      .appendSuffix(suffix.get(lang).get('m)._1, suffix.get(lang).get('m)._2)
       .appendSeconds()
-      .appendSuffix(suffix.get(lang).get(10), suffix.get(lang).get(11))
+      .appendSuffix(suffix.get(lang).get('s)._1, suffix.get(lang).get('s)._2)
       .toFormatter()
   }
 
@@ -61,6 +74,6 @@ object Template {
 
   def since(date: DateTime): String = {
     val per: Period = new Period(date, DateTime.now())
-    pf.print(per)
+    pf.print(per).trim
   }
 }

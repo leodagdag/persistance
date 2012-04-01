@@ -1,7 +1,8 @@
 package controllers
 
-import play.api.mvc.{RequestHeader, Results, Security, Result, Request, AnyContent, Action}
 import play.api.Logger
+import play.api.mvc._
+import models.User
 
 /**
  * Provide security features
@@ -9,9 +10,13 @@ import play.api.Logger
 trait Secured extends Users {
 
   /**
-   * Retrieve the connected user email.
+   * Retrieve the connected username.
    */
   private def username(request: RequestHeader) = request.session.get("username")
+
+  implicit def user(implicit request: RequestHeader): Option[User] = {
+    for (username <- request.session.get("username")) yield User.byUsername(username).get
+  }
 
   /**
    * Redirect to login if the user in not authorized.

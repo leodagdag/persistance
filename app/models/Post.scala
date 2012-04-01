@@ -9,11 +9,11 @@ import org.joda.time.DateTime
 
 case class Post(_id: ObjectId = new ObjectId,
                 title: String,
-                content: Option[String] = None,
-                authorId: ObjectId,
+                content: String,
+                authorId: Option[ObjectId] = None,
                 created: DateTime = new DateTime(),
                 featured: Boolean = false,
-                var comments: List[Comment] = null) {
+                var comments: List[Comment] = Nil) {
   def simpleCopy(src: Post): Post = {
     this.copy(title = src.title,
       content = src.content,
