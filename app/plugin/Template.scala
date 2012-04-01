@@ -1,13 +1,12 @@
 package plugin
 
-import play.api.i18n._
 import models.User
 import com.mongodb.casbah.commons.Imports._
-import play.api.Configuration
 import play.api.Play._
-import org.joda.time.{Period, Duration, DateTime}
+import org.joda.time.{Period, DateTime}
 import org.joda.time.format._
-import play.api.i18n.Lang
+import play.api.i18n._
+import util.parsing.combinator.testing.Number
 
 /**
  * User: leodagdag
@@ -19,10 +18,9 @@ object Template {
 
   private lazy val pattern: String = current.configuration.getString("date.format").getOrElse("dd/MM/yyyy")
 
-
   private lazy val pf: PeriodFormatter = {
 
-    val suffix =
+    val suffix: Map[Symbol,Map[Symbol,Tuple2[String,String]]] =
       """
       en=y:year,years|M:month,months|d:day,days|h:hour,hours|m:minute,minutes|s:seconde,secondes
       fr=y:année,années|M:mois,mois|d:jour,jours|h:heure,heures|m:minute,minutes|s:seconde,secondes
@@ -39,8 +37,10 @@ object Template {
       }.toMap
 
     val lang = Symbol(Lang.defaultLang.language)
+
     new PeriodFormatterBuilder()
       .printZeroRarelyLast()
+      .appendPrefix("since ")
       .appendYears()
       .appendSuffix(suffix.get(lang).get('y)._1, suffix.get(lang).get('y)._2)
       .appendMonths()
@@ -56,6 +56,13 @@ object Template {
       .toFormatter()
   }
 
+  def pluralize(n: java.lang.Number): String = {
+    if (n != 1) {
+      "s"
+    } else {
+      ""
+    }
+  }
 
   def connected(user: Option[User]): Boolean = {
     user match {
