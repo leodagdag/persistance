@@ -9,6 +9,7 @@ import play.api.Play.current
 import utils._
 import models._
 import views._
+import play.core.Router
 
 object Application extends Controller with Secured {
 
@@ -55,7 +56,7 @@ object Application extends Controller with Secured {
       implicit request =>
         loginForm.bindFromRequest.fold(
           formWithErrors => BadRequest(html.login(formWithErrors)),
-          user => Redirect(routes.Administration.index).withSession("username" -> user._1))
+          user => Redirect(routes.Application.index).withSession("username" -> user._1))
     }
   }
 
@@ -65,8 +66,7 @@ object Application extends Controller with Secured {
   def logout = Logging {
     Action {
       implicit request =>
-        Redirect(routes.Application.index).withNewSession.flashing(
-          "success" -> "You've been logged out")
+        Redirect(routes.Application.login).withNewSession.flashing("success" -> "You've been logged out")
     }
   }
 

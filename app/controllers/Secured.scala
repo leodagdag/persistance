@@ -12,7 +12,7 @@ trait Secured extends Users {
   /**
    * Retrieve the connected username.
    */
-  private def username(request: RequestHeader) = request.session.get("username")
+  private def username(request: RequestHeader):Option[String] = request.session.get("username")
 
   implicit def user(implicit request: RequestHeader): Option[User] = {
     for (username <- request.session.get("username")) yield User.byUsername(username).get
