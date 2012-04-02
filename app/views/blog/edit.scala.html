@@ -21,7 +21,7 @@
 				<fieldset>
 					<input type="hidden" name="_id" value="@id">
 					@inputText(postForm("title"), '_label -> Messages("blog.edit.post.title"))
-					@inputText(postForm("content"), '_label -> Messages("blog.edit.post.content"))
+					@textarea(postForm("content"), '_label -> Messages("blog.edit.post.content"))
                     @checkbox(
                         postForm("featured"),
                         '_label -> Messages("blog.edit.post.featured"),

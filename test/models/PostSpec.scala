@@ -28,7 +28,7 @@ class PostSpec extends Specification {
 
     "create 1" in {
       running(FakeApplication()) {
-        val post = Post(title = "titre", content = Some("content"))
+        val post = Post(title = "titre", content = "content")
         Post.save(post)
         savedId = post._id
         savedId mustNotEqual null
@@ -54,7 +54,7 @@ class PostSpec extends Specification {
         var post: Post = null
         (1 to 12) {
           i =>
-            post = Post(title = "titre" + i)
+            post = Post(title = "titre" + i, content = "content " + i)
             Post.save(post)
             if (i == 12) {
               deleteId = post._id
