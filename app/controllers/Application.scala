@@ -9,7 +9,6 @@ import play.api.Play.current
 import utils._
 import models._
 import views._
-import play.core.Router
 
 object Application extends Controller with Secured {
 
@@ -33,9 +32,10 @@ object Application extends Controller with Secured {
   val loginForm = Form(
     tuple(
       "username" -> nonEmptyText,
-      "password" -> nonEmptyText)
-      verifying("Invalid username or password", result => result match {
-      case (email, password) => User.authenticate(email, password).isDefined
+      "password" -> nonEmptyText,
+      "redirect" -> text
+    ).verifying("Invalid username or password", result => result match {
+      case (email, password, redirect) => User.authenticate(email, password).isDefined
     }))
 
   /**
@@ -43,8 +43,13 @@ object Application extends Controller with Secured {
    */
   def login = Logging {
     Action {
-      implicit request =>
+      implicit request => {
+        loginForm.forField("redirect") {
+          field =>
+            flash.get("url").getOrElse("/admin")
+        }
         Ok(html.login(loginForm))
+      }
     }
   }
 
@@ -56,7 +61,12 @@ object Application extends Controller with Secured {
       implicit request =>
         loginForm.bindFromRequest.fold(
           formWithErrors => BadRequest(html.login(formWithErrors)),
-          user => Redirect(routes.Application.index).withSession("username" -> user._1))
+          user => {
+
+            //Redirect(routes.Application.index).withSession("username" -> user._1))
+            Logger.debug("authenticate:" + flash.get("url").getOrElse("/"))
+            Redirect(flash.get("url").getOrElse("/")).withSession("username" -> user._1)
+          })
     }
   }
 

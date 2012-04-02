@@ -7,13 +7,18 @@ import models.User
 /**
  * Provide security features
  */
-trait Secured extends Users {
+trait Secured {
 
   /**
    * Retrieve the connected username.
    */
   private def username(request: RequestHeader):Option[String] = request.session.get("username")
 
+  /**
+   * Retrieve user in session from Database
+   * @param request
+   * @return Option[User]
+   */
   implicit def user(implicit request: RequestHeader): Option[User] = {
     for (username <- request.session.get("username")) yield User.byUsername(username).get
   }
@@ -21,19 +26,21 @@ trait Secured extends Users {
   /**
    * Redirect to login if the user in not authorized.
    */
-  private def onUnauthorized(request: RequestHeader) = Results.Redirect(routes.Application.login)
+  private def onUnauthorized(request: RequestHeader) = {
+    Results.Redirect(routes.Application.login).flashing("url" -> request.path)
+  }
 
   // --
 
   /**
    * Action for authenticated users.
    */
-  def IsAuthenticated(f: => String => Request[AnyContent] => Result) = Security.Authenticated(username, onUnauthorized) {
-    user =>
-      Logger.debug {
-        "IsAuthenticated ? [%s]".format(user)
-      }
-      Action(request => f(user)(request))
+  def IsAuthenticated(f: => String => Request[AnyContent] => Result) = {
+
+    Security.Authenticated(username, onUnauthorized) {
+      user =>
+        Action(request => f(user)(request))
+    }
   }
 
   /*

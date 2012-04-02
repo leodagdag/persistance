@@ -1,4 +1,4 @@
-@(loginForm: Form[(String,String)])(implicit flash: Flash, lang: play.api.i18n.Lang, user: Option[User])
+@(loginForm: Form[(String,String,String)])(implicit flash: Flash, lang: play.api.i18n.Lang, user: Option[User])
 
 @import helper._
 
@@ -20,8 +20,10 @@
                 </div>
 			}
 			@form(action = routes.Application.authenticate, args = 'class -> "form-horizontal") {
+                <input type="hidden" value="@loginForm("redirect").value.getOrElse()">
 				<legend>@Messages("login.signin")</legend>
 				<fieldset>
+
 					@inputText(loginForm("username"), '_label -> Messages("login.username"))
 	            	@inputPassword(loginForm("password"), '_label -> Messages("login.password"))
 	            	<div class="form-actions">
