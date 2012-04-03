@@ -26,30 +26,35 @@ object Application extends Controller with Secured {
   }
 
   // -- Authentication
+
+  /**
+   * Login object
+   * @param username
+   * @param password
+   * @param redirect
+   */
+  case class Login(username: String, password: String, redirect: Option[String])
+
   /**
    * Login form
    */
   val loginForm = Form(
-    tuple(
-      "username" -> nonEmptyText,
-      "password" -> nonEmptyText,
-      "redirect" -> text
-    ).verifying("Invalid username or password", result => result match {
-      case (email, password, redirect) => User.authenticate(email, password).isDefined
+    mapping(
+      "username" -> text,
+      "password" -> text,
+      "redirect" -> optional(text)
+    )(Login.apply)(Login.unapply)
+      .verifying("Invalid username or password", result => result match {
+      case login: Login => User.authenticate(login.username, login.password).isDefined
     }))
-
   /**
    * Login page.
    */
   def login = Logging {
     Action {
-      implicit request => {
-        loginForm.forField("redirect") {
-          field =>
-            flash.get("url").getOrElse("/admin")
-        }
-        Ok(html.login(loginForm))
-      }
+      implicit request =>
+        Ok(html.login(loginForm.fill(Login("", "", Some(flash.get("url").getOrElse("/"))))))
+
     }
   }
 
@@ -60,13 +65,11 @@ object Application extends Controller with Secured {
     Action {
       implicit request =>
         loginForm.bindFromRequest.fold(
-          formWithErrors => BadRequest(html.login(formWithErrors)),
-          user => {
-
-            //Redirect(routes.Application.index).withSession("username" -> user._1))
-            Logger.debug("authenticate:" + flash.get("url").getOrElse("/"))
-            Redirect(flash.get("url").getOrElse("/")).withSession("username" -> user._1)
-          })
+          formWithErrors =>
+            BadRequest(html.login(formWithErrors)),
+          login =>
+            Redirect(login.redirect.getOrElse("/")).withSession("username" -> login.username)
+        )
     }
   }
 
@@ -76,7 +79,7 @@ object Application extends Controller with Secured {
   def logout = Logging {
     Action {
       implicit request =>
-        Redirect(routes.Application.login).withNewSession.flashing("success" -> "You've been logged out")
+        Redirect(routes.Application.index).withNewSession.flashing("success" -> "You've been logged out")
     }
   }
 

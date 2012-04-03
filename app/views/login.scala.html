@@ -1,6 +1,7 @@
-@(loginForm: Form[(String,String,String)])(implicit flash: Flash, lang: play.api.i18n.Lang, user: Option[User])
+@(loginForm: Form[controllers.Application.Login])(implicit flash: Flash, lang: play.api.i18n.Lang, user: Option[User])
 
 @import helper._
+
 
 @implicitFieldConstructor = @{ FieldConstructor(tags.twitterBootstrapInput.f) }
 
@@ -20,7 +21,7 @@
                 </div>
 			}
 			@form(action = routes.Application.authenticate, args = 'class -> "form-horizontal") {
-                <input type="hidden" value="@loginForm("redirect").value.getOrElse()">
+                <input type="hidden" name="@loginForm("redirect").name" value="@loginForm("redirect").value.getOrElse()">
 				<legend>@Messages("login.signin")</legend>
 				<fieldset>
 

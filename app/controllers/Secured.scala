@@ -12,7 +12,7 @@ trait Secured {
   /**
    * Retrieve the connected username.
    */
-  private def username(request: RequestHeader):Option[String] = request.session.get("username")
+  private def username(request: RequestHeader): Option[String] = request.session.get("username")
 
   /**
    * Retrieve user in session from Database

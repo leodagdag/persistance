@@ -95,7 +95,7 @@ object Blog extends Controller with Secured {
       username =>
         Action {
           implicit request =>
-            var p =    postForm.bindFromRequest
+            var p = postForm.bindFromRequest
             p.fold(
               formWithErrors => BadRequest(html.blog.edit(id, formWithErrors)),
               updPost => {

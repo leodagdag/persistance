@@ -9,7 +9,8 @@ object ApplicationBuild extends Build {
 
   val appDependencies = Seq(
     //"net.vz.mongodb.jackson" % "play-mongo-jackson-mapper_2.9.1" % "1.0.0-rc.2",
-    "com.mongodb.casbah" %% "casbah" % "2.1.5-1",
+    // "com.mongodb.casbah" %% "casbah" % "2.1.5-1",
+    "com.mongodb.casbah" %% "casbah-gridfs" % "2.1.5-1",
     "com.novus" %% "salat-core" % "0.0.8-SNAPSHOT"
   )
 
