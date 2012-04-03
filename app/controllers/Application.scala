@@ -12,6 +12,8 @@ import views._
 
 object Application extends Controller with Secured {
 
+  protected val HOME_URL = "/"
+
   lazy val config: Option[Configuration] = current.configuration.getConfig("app")
 
   lazy val applicationName = current.configuration.getConfig("application").get.getString("name").getOrElse {
@@ -40,8 +42,8 @@ object Application extends Controller with Secured {
    */
   val loginForm = Form(
     mapping(
-      "username" -> text,
-      "password" -> text,
+      "username" -> nonEmptyText,
+      "password" -> nonEmptyText,
       "redirect" -> optional(text)
     )(Login.apply)(Login.unapply)
       .verifying("Invalid username or password", result => result match {
@@ -54,7 +56,6 @@ object Application extends Controller with Secured {
     Action {
       implicit request =>
         Ok(html.login(loginForm.fill(Login("", "", Some(flash.get("url").getOrElse("/"))))))
-
     }
   }
 
@@ -68,7 +69,7 @@ object Application extends Controller with Secured {
           formWithErrors =>
             BadRequest(html.login(formWithErrors)),
           login =>
-            Redirect(login.redirect.getOrElse("/")).withSession("username" -> login.username)
+            Redirect(login.redirect.getOrElse(HOME_URL)).withSession("username" -> login.username)
         )
     }
   }
@@ -79,7 +80,8 @@ object Application extends Controller with Secured {
   def logout = Logging {
     Action {
       implicit request =>
-        Redirect(routes.Application.index).withNewSession.flashing("success" -> "You've been logged out")
+        Redirect(request.headers.get(REFERER).getOrElse(HOME_URL)).withNewSession.flashing("success" -> "You've been logged out")
+
     }
   }
 

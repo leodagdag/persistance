@@ -2,7 +2,6 @@
 
 @import helper._
 
-
 @implicitFieldConstructor = @{ FieldConstructor(tags.twitterBootstrapInput.f) }
 
 @main(None, None) {
@@ -25,8 +24,8 @@
 				<legend>@Messages("login.signin")</legend>
 				<fieldset>
 
-					@inputText(loginForm("username"), '_label -> Messages("login.username"))
-	            	@inputPassword(loginForm("password"), '_label -> Messages("login.password"))
+					@inputText(loginForm("username"), '_label -> Messages("login.username"), 'placeholder -> Messages("login.username"))
+	            	@inputPassword(loginForm("password"), '_label -> Messages("login.password"), 'placeholder -> Messages("login.password"))
 	            	<div class="form-actions">
 	            		<button type="submit" class="btn btn-primary">@Messages("login.login")</button>
 	           		</div>
