@@ -2,3 +2,4 @@
 $(".alert").alert()
 # enable dropdown mens
 $('.dropdown-toggle').dropdown()
+
