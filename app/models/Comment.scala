@@ -1,9 +1,9 @@
 package models
 
+import _root_.salactx._
 import com.novus.salat.dao._
 import com.mongodb.casbah.commons.Imports._
 import org.joda.time._
-import salactx._
 
 case class Comment(created: DateTime = new DateTime(),
                    user: User,

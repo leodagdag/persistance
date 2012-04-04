@@ -12,6 +12,7 @@ import org.bson.types.ObjectId
 import com.mongodb.casbah.commons.MongoDBObject
 import com.mongodb.casbah.Imports._
 
+import templates.HtmlFormat
 import utils._
 import models._
 import views._

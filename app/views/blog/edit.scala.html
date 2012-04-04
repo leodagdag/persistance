@@ -5,7 +5,7 @@
 
 @implicitFieldConstructor = @{ FieldConstructor(tags.twitterBootstrapInput.f) }
 
-@main(Some(ModuleType.BLOG), Some("Blog")) {
+@main(ModuleType.BLOG, Some("Blog")) {
   
 	@postForm.globalError.map { error =>
 		<div class="row">
@@ -21,7 +21,7 @@
 				<fieldset>
 					<input type="hidden" name="_id" value="@id">
 					@inputText(postForm("title"), '_label -> Messages("blog.edit.post.title"))
-					@textarea(postForm("content"), '_label -> Messages("blog.edit.post.content"))
+					@textarea(postForm("content"), '_label -> Messages("blog.edit.post.content"), 'class -> "markItUp" )
                     @checkbox(
                         postForm("featured"),
                         '_label -> Messages("blog.edit.post.featured"),

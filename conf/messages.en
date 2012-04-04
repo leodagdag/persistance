@@ -24,6 +24,12 @@ login.signin=Sign in
 post.by=by
 post.at=at
 post.edit=Edit the post
+blog.edit.legend=Edit the post
+blog.edit.post.title=Title
+blog.edit.post.content=Content
+blog.edit.post.featured=Featured
+blog.edit.update=Update
+blog.edit.cancel=Cancel
 
 # Comment
 comment.by=by

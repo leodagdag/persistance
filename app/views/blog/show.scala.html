@@ -1,9 +1,9 @@
 @(post: Post)(implicit flash: Flash, lang: play.api.i18n.Lang, user: Option[User])
 
-@import plugin.Template._
+@import plugin.TemplateUtils._
 @import utils.ModuleType
 
-@main(Some(ModuleType.BLOG), Some("Blog")) {
+@main(ModuleType.BLOG, Some("Blog")) {
 	@flash.get("success").map { message =>
 		<div class="alert alert-success fade in">
 			<a class="close" data-dismiss="alert" href="#">×</a>
@@ -25,7 +25,7 @@
                     }
                 } *@
             </h5>
-            <p>@post.content</p>
+            <p>@HtmlFormat.raw(post.content)</p>
         </div>
     </div>
 

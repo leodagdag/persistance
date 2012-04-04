@@ -24,6 +24,12 @@ login.signin=Connexion
 post.by=par
 post.at=le
 post.edit=Editer l'article
+blog.edit.legend=Editer un post
+blog.edit.post.title=Titre
+blog.edit.post.content=Contenu
+blog.edit.post.featured=A la une
+blog.edit.update=Mettre à jour
+blog.edit.cancel=Annuler
 
 # Comment
 comment.by=par

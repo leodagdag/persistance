@@ -1,9 +1,8 @@
 package models
 
-import salactx._
+import _root_.salactx._
 import com.novus.salat.dao._
 import com.mongodb.casbah.commons.Imports._
-import com.google.common.base._
 
 case class User(_id: ObjectId = new ObjectId,
                 username: String,

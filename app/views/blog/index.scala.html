@@ -2,14 +2,14 @@
 
 @import utils.ModuleType
 
-@main(Some(ModuleType.BLOG), Some("Blog")) {
+@main(ModuleType.BLOG, Some("Blog")) {
 	
 	  @featured match {
 	    case Some(featured) => {
 		  <div class="hero-unit">
 		  	<h1>@featured.title</h1>  
 		  	<p>@featured.content</p>
-	    	<p><a class="btn btn-primary btn-large" href="@routes.Blog.show(featured._id.toString())">Learn more »</a></p>
+	    	<p><a class="btn btn-primary" href="@routes.Blog.show(featured._id.toString())">Learn more »</a></p>
 		  </div>
 	    }
 	    case None => {

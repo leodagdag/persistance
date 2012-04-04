@@ -10,7 +10,7 @@ sealed abstract class ModuleType
 
 object ModuleType {
 
-  object INDEX extends ModuleType
+  object HOME extends ModuleType
   
   object LOGIN extends ModuleType
   

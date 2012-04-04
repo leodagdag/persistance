@@ -1,10 +1,10 @@
 package models
 
+import _root_.salactx._
 import com.novus.salat.dao._
 import com.mongodb.casbah.commons.Imports._
 import controllers.Blog
 import javax.persistence.EntityNotFoundException
-import salactx._
 import org.joda.time.DateTime
 
 case class Post(_id: ObjectId = new ObjectId,
@@ -42,9 +42,6 @@ object Post extends SalatDAO[Post, ObjectId](collection = DB.connection("Post"))
     }
   }
 
-  def featured = {
-    val featured = Post.findOne(MongoDBObject("featured" -> true))
-    featured
-  }
+  def featured: Option[Post] = Post.findOne(MongoDBObject("featured" -> true))
 
 }

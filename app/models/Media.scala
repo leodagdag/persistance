@@ -1,8 +1,8 @@
 package models
 
+import _root_.salactx._
 import com.novus.salat.dao._
 import com.mongodb.casbah.commons.Imports._
-import salactx._
 
 case class Media(_id: ObjectId = new ObjectId,
                  title: String,

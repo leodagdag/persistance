@@ -6,7 +6,6 @@ import play.api.Play._
 import org.joda.time.{Period, DateTime}
 import org.joda.time.format._
 import play.api.i18n._
-import util.parsing.combinator.testing.Number
 
 /**
  * User: leodagdag
@@ -14,7 +13,7 @@ import util.parsing.combinator.testing.Number
  * Time: 21:46
  */
 
-object Template {
+object TemplateUtils {
 
   private lazy val pattern: String = current.configuration.getString("date.format").getOrElse("dd/MM/yyyy")
 
@@ -31,7 +30,7 @@ object Template {
               Symbol(period(0).toString) -> period.drop(2).mkString
           }.toMap.map {
             words: Tuple2[Symbol, String] => // ('y,"year,years")(Symbol, String)
-              val word: Array[String] = words._2.split(',').map(" " + _ + " ")
+              val word: Array[String] = words._2.split(',').map(" " + _ + " ").asInstanceOf[Array[String]]
               words._1 -> Tuple2(word(0), word(1))
           }.toMap
       }.toMap
