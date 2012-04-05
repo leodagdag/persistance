@@ -22,6 +22,9 @@ class PostSpec extends Specification {
     "remove all" in {
       running(FakeApplication()) {
         Post.collection.drop()
+        User.collection.drop()
+        User.save(User(email = "user@b.com", username = "user", password = "user", firstName = Some("first"), lastName = Some("last")))
+        User.count() mustEqual 0
         Post.count() mustEqual 0
       }
     }
@@ -99,7 +102,8 @@ class PostSpec extends Specification {
 
     "add a comment" in {
       running(FakeApplication()) {
-        var comment = new Comment(created = new DateTime(), content = "new comment")
+        val user = User.findOne(MongoDBObject("username" -> "user")).get
+        var comment = new Comment(created = new DateTime(), content = "new comment", user = user)
         Post.addComment(savedId, comment)
         var post = Post.findOneByID(savedId).get
         post.comments.size mustEqual 1
@@ -116,7 +120,8 @@ class PostSpec extends Specification {
 
     "add a comment generate EntityNotFoundException" in {
       running(FakeApplication()) {
-        var comment = new Comment(created = new DateTime(), content = "new comment")
+        val user = User.findOne(MongoDBObject("username" -> "user")).get
+        var comment = new Comment(created = new DateTime(), content = "new comment", user = user)
         Post.addComment(deleteId, comment) must throwAn[Exception]
       }
     }
