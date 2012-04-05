@@ -24,7 +24,7 @@ class PostSpec extends Specification {
         Post.collection.drop()
         User.collection.drop()
         User.save(User(email = "user@b.com", username = "user", password = "user", firstName = Some("first"), lastName = Some("last")))
-        User.count() mustEqual 0
+        User.count() mustEqual 1 
         Post.count() mustEqual 0
       }
     }
