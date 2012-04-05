@@ -52,7 +52,7 @@ class PostSpec extends Specification {
     "create 12 Posts" in {
       running(FakeApplication()) {
         var post: Post = null
-        (1 to 12) {
+        (1 to 12).foreach {
           i =>
             post = Post(title = "titre" + i, content = "content " + i)
             Post.save(post)
