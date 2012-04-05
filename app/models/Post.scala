@@ -6,6 +6,7 @@ import com.mongodb.casbah.commons.Imports._
 import controllers.Blog
 import javax.persistence.EntityNotFoundException
 import org.joda.time.DateTime
+import play.api.templates.{HtmlFormat, Html}
 
 case class Post(_id: ObjectId = new ObjectId,
                 title: String,

@@ -17,6 +17,7 @@ import utils._
 import models._
 import views._
 import org.joda.time.DateTime
+import org.apache.commons.lang.StringEscapeUtils
 
 /**
  * User: leodagdag
@@ -53,6 +54,7 @@ object Blog extends Controller with Secured {
             post.title,
             post.content,
             post.featured))
+
     )
 
   def index = Logging {
