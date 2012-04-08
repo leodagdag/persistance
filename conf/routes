@@ -14,6 +14,7 @@ GET     /logout                     controllers.Application.logout
 GET     /portfolio                  controllers.Portfolio.index
 
 # Blog
+GET     /blog/:id/json              controllers.Blog.showJson(id: String)
 GET     /blog                       controllers.Blog.index
 GET		/blog/:id					controllers.Blog.show(id: String)
 GET		/blog/:id/edit				controllers.Blog.edit(id: String)
@@ -21,6 +22,8 @@ POST	/blog/:id/update			controllers.Blog.update(id: String)
 
 # Administration
 GET     /admin		                controllers.Administration.index
+
+
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

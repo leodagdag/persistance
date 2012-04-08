@@ -6,7 +6,8 @@ import com.mongodb.casbah.commons.Imports._
 import controllers.Blog
 import javax.persistence.EntityNotFoundException
 import org.joda.time.DateTime
-import play.api.templates.{HtmlFormat, Html}
+import play.api.libs.json.Json._
+import play.api.libs.json.{JsObject, JsString, JsValue, Writes}
 
 case class Post(_id: ObjectId = new ObjectId,
                 title: String,
@@ -22,10 +23,19 @@ case class Post(_id: ObjectId = new ObjectId,
   }
 }
 
-object Post extends SalatDAO[Post, ObjectId](collection = DB.connection("Post")) with Model[Post] {
+object Post extends SalatDAO[Post, ObjectId](collection = DB.connection("Post")) with Model[Post] with Writes[Post] {
 
   com.mongodb.casbah.commons.conversions.scala.RegisterConversionHelpers()
   com.mongodb.casbah.commons.conversions.scala.RegisterJodaTimeConversionHelpers()
+
+  def writes(post: Post): JsValue = JsObject(
+    List(
+      "_id" -> JsString(post._id.toString),
+      "title" -> toJson(post.title),
+      "content" -> toJson(post.content),
+      "created" -> toJson(post.created.toDate.getTime),
+      "featured" -> toJson(post.featured)
+    ))
 
   override val PAGE_SIZE = Blog.config.getInt("pageSize").getOrElse(10)
 
@@ -44,5 +54,6 @@ object Post extends SalatDAO[Post, ObjectId](collection = DB.connection("Post"))
   }
 
   def featured: Option[Post] = Post.findOne(MongoDBObject("featured" -> true))
+
 
 }

@@ -15,43 +15,25 @@ import play.api.i18n._
 
 object TemplateUtils {
 
+
   private lazy val pattern: String = current.configuration.getString("date.format").getOrElse("dd/MM/yyyy")
 
-  private lazy val pf: PeriodFormatter = {
-
-    val suffix: Map[Symbol,Map[Symbol,Tuple2[String,String]]] =
-      """
-      en=y:year,years|M:month,months|d:day,days|h:hour,hours|m:minute,minutes|s:seconde,secondes
-      fr=y:année,années|M:mois,mois|d:jour,jours|h:heure,heures|m:minute,minutes|s:seconde,secondes
-      """.split('\n').map(_.trim).filter(_.size > 0).map(_.split('=')).map {
-        line: Array[String] => // ["en","y:year,years|M:month,months|d:day,days|h:hour,hours|m:minute,minutes|s:seconde,secondes"]
-          Symbol(line(0)) -> line(1).split('|').map {
-            period: String => // "y:year,years"
-              Symbol(period(0).toString) -> period.drop(2).mkString
-          }.toMap.map {
-            words: Tuple2[Symbol, String] => // ('y,"year,years")(Symbol, String)
-              val word: Array[String] = words._2.split(',').map(" " + _ + " ").asInstanceOf[Array[String]]
-              words._1 -> Tuple2(word(0), word(1))
-          }.toMap
-      }.toMap
-
-    val lang = Symbol(Lang.defaultLang.language)
-
+  private def pf(implicit lan: Lang): PeriodFormatter = {
     new PeriodFormatterBuilder()
       .printZeroRarelyLast()
-      .appendPrefix("since ")
+      .appendPrefix(Messages("since"))
       .appendYears()
-      .appendSuffix(suffix.get(lang).get('y)._1, suffix.get(lang).get('y)._2)
+      .appendSuffix(" " + Messages("since.year") + " ", " " + Messages("since.years") + " ")
       .appendMonths()
-      .appendSuffix(suffix.get(lang).get('M)._1, suffix.get(lang).get('M)._2)
+      .appendSuffix(" " + Messages("since.month") + " ", " " + Messages("since.months") + " ")
       .appendDays()
-      .appendSuffix(suffix.get(lang).get('d)._1, suffix.get(lang).get('d)._2)
+      .appendSuffix(" " + Messages("since.day") + " ", " " + Messages("since.days") + " ")
       .appendHours()
-      .appendSuffix(suffix.get(lang).get('h)._1, suffix.get(lang).get('h)._2)
+      .appendSuffix(" " + Messages("since.hour") + " ", " " + Messages("since.hours") + " ")
       .appendMinutes()
-      .appendSuffix(suffix.get(lang).get('m)._1, suffix.get(lang).get('m)._2)
+      .appendSuffix(" " + Messages("since.minute") + " ", " " + Messages("since.minutes") + " ")
       .appendSeconds()
-      .appendSuffix(suffix.get(lang).get('s)._1, suffix.get(lang).get('s)._2)
+      .appendSuffix(" " + Messages("since.second"), " " + Messages("since.seconds"))
       .toFormatter()
   }
 
@@ -78,7 +60,7 @@ object TemplateUtils {
     date.toString(pattern)
   }
 
-  def since(date: DateTime): String = {
+  def since(date: DateTime)(implicit lan: Lang): String = {
     val per: Period = new Period(date, DateTime.now())
     pf.print(per).trim
   }

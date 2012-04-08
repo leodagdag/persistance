@@ -1,11 +1,18 @@
 # Utils
 # since
-since.seconds = %s second%s
-since.minutes = %s minute%s
-since.hours   = %s hour%s
-since.days    = %s day%s
-since.months  = %s month%s
-since.years   = %s year%s
+since         = since
+since.second  = second
+since.seconds = seconds
+since.minute  = minute
+since.minutes = minutes
+since.hour    = hour
+since.hours   = hours
+since.day     = day
+since.days    = days
+since.month   = month
+since.months  = months
+since.year    = year
+since.years   = years
 
 # Navigation
 navigation.administration=Administration

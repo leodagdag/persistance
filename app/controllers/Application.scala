@@ -1,14 +1,18 @@
 package controllers
 
 import play.api._
+import libs.json._
 import play.api.mvc._
 import play.api.data._
 import play.api.data.Forms._
 import play.api.Play.current
+import play.api.libs.json.Json._
+import play.api.libs.json.Generic._
 
 import utils._
 import models._
 import views._
+
 
 object Application extends Controller with Secured {
 
@@ -26,6 +30,10 @@ object Application extends Controller with Secured {
         Ok(views.html.index("Your new application is ready."))
     }
   }
+
+
+
+
 
   // -- Authentication
 

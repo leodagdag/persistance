@@ -2,6 +2,7 @@ package controllers
 
 import play.api.Play.current
 import play.api._
+import libs.json.Json._
 import play.api.i18n._
 import play.api.mvc._
 import play.api.data._
@@ -69,13 +70,25 @@ object Blog extends Controller with Secured {
 
   def show(id: String) = Logging {
     Action {
-      implicit request =>
+      implicit request => {
         val post = Post.findOneByID(ObjectId.massageToObjectId(id))
         post match {
           case Some(post) => Ok(html.blog.show(post))
           case None => NotFound
         }
+      }
+    }
+  }
 
+  def showJson(id: String) = Logging {
+    Action {
+      request => {
+        val post = Post.findOneByID(ObjectId.massageToObjectId(id))
+        post match {
+          case Some(post) => Ok(toJson(Post.writes(post)))
+          case None => NotFound
+        }
+      }
     }
   }
 

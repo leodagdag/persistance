@@ -20,7 +20,7 @@
                 </div>
 			}
 			@form(action = routes.Application.authenticate, args = 'class -> "form-horizontal") {
-                <input type="hidden" name="@loginForm("redirect").name" value="@loginForm("redirect").value.getOrElse()">
+                <input type="hidden" name="@loginForm("redirect").name" value="@loginForm("redirect").value">
 				<legend>@Messages("login.signin")</legend>
 				<fieldset>
 
