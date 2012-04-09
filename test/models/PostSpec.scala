@@ -26,7 +26,7 @@ class PostSpec extends Specification {
         Post.count() mustEqual 0
       }
     }
-
+     /*
     "create 1" in {
       running(FakeApplication()) {
         val post = Post(title = "titre", content = "content")
@@ -125,6 +125,6 @@ class PostSpec extends Specification {
         Post.addComment(deleteId, comment) must throwAn[Exception]
       }
     }
-
+       */
   }
 }
