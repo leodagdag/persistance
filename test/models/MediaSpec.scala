@@ -8,7 +8,7 @@ import models._
 import java.io.File
 import play.api.test.FakeApplication
 import plugin.GridFSHelper
-
+/*
 class MediaSpec extends Specification {
 
   com.mongodb.casbah.commons.conversions.scala.RegisterConversionHelpers()
@@ -132,3 +132,4 @@ class MediaSpec extends Specification {
 
   }
 }
+*/
