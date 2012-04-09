@@ -20,7 +20,7 @@ trait Secured {
    * @return Option[User]
    */
   implicit def user(implicit request: RequestHeader): Option[User] = {
-    for (username <- request.session.get("username")) yield User.byUsername(username).get
+    for (username <- username(request)) yield User.byUsername(username).get
   }
 
   /**

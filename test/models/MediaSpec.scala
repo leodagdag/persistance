@@ -3,15 +3,11 @@ package models
 import org.specs2.mutable._
 import play.api.test.Helpers.running
 import play.api.test.FakeApplication
-import com.mongodb.casbah.commons.MongoDBObject
 import com.mongodb.casbah.commons.Imports._
-import com.mongodb.WriteConcern
 import models._
-import play.api.test.FakeApplication
 import java.io.File
-import plugin.GridFSHelper
 import play.api.test.FakeApplication
-import utils._
+import plugin.GridFSHelper
 
 class MediaSpec extends Specification {
 
@@ -27,6 +23,7 @@ class MediaSpec extends Specification {
     val FileContentPath = "image/jpeg"
     val key = "key1"
     val value = "value1"
+
 
     "remove all" in {
       running(FakeApplication()) {
@@ -131,7 +128,6 @@ class MediaSpec extends Specification {
         Media.save(media)
         Media.findOneByID(savedId).get.fileId must beAnInstanceOf[Option[ObjectId]]
       }
-      
     }
 
   }

@@ -4,19 +4,29 @@
 
 @main(ModuleType.BLOG, Some("Blog")) {
 	
-	  @featured match {
+	@featured match {
 	    case Some(featured) => {
-		  <div class="hero-unit">
-		  	<h1>@featured.title</h1>  
-		  	<p>@featured.content</p>
-	    	<p><a class="btn btn-primary" href="@routes.Blog.show(featured._id.toString())">Learn more »</a></p>
-		  </div>
+		    <div class="hero-unit">
+		  	    <h1>@featured.title</h1>
+		  	    <p>@featured.content</p>
+	    	    <p><a class="btn btn-primary" href="@routes.Blog.show(featured._id.toString())">Learn more »</a></p>
+		    </div>
 	    }
 	    case None => {
-	    }
-	  }
-		
-	
+        }
+    }
+    @user match {
+        case Some(user) => {
+            <div class="row">
+                <div class="span12">
+                    <a href="@routes.Blog.create" class="btn btn-warning">@Messages("blog.create")</a>
+                </div>
+            </div>
+        }
+        case None => {
+        }
+    }
+
 	@for(post <- posts) {
 		<div class="row">
 			<div class="span12">

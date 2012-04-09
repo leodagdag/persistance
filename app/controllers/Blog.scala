@@ -35,7 +35,6 @@ object Blog extends Controller with Secured {
 
   implicit lazy val dao = Post
 
-
   val postForm =
     Form(
       mapping(
@@ -70,25 +69,51 @@ object Blog extends Controller with Secured {
 
   def show(id: String) = Logging {
     Action {
-      implicit request => {
+      implicit request =>
         val post = Post.findOneByID(ObjectId.massageToObjectId(id))
         post match {
           case Some(post) => Ok(html.blog.show(post))
           case None => NotFound
         }
-      }
     }
   }
 
   def showJson(id: String) = Logging {
     Action {
-      request => {
+      implicit request =>
         val post = Post.findOneByID(ObjectId.massageToObjectId(id))
         post match {
           case Some(post) => Ok(toJson(Post.writes(post)))
           case None => NotFound
         }
-      }
+    }
+  }
+
+  def create = Logging {
+    IsAuthenticated {
+      username =>
+        Action {
+          implicit request => {
+            Ok(html.blog.create(postForm))
+          }
+        }
+    }
+  }
+
+  def save = Logging {
+    IsAuthenticated {
+      username =>
+        Action {
+          implicit request =>
+            var p = postForm.bindFromRequest
+            p.fold(
+              formWithErrors => BadRequest(html.blog.create(formWithErrors)),
+              newPost => {
+                val id = Post.insert(newPost.copy(authorId = Some(user.get._id)))
+                Redirect(routes.Blog.show(id.get.toString)).flashing("success" -> "Post %s has been created".format(newPost.title))
+              }
+            )
+        }
     }
   }
 
@@ -118,12 +143,12 @@ object Blog extends Controller with Secured {
                 val post = Post.findOneByID(ObjectId.massageToObjectId(id))
                 post match {
                   case Some(post) =>
-                    post.copy(authorId = Some(user.get._id))
-                    Post.update(MongoDBObject("_id" -> Some(post._id)), post.simpleCopy(updPost), false, false, new WriteConcern())
+                    Post.update(MongoDBObject("_id" -> Some(post._id)), post.simpleCopy(updPost))
                     Redirect(routes.Blog.show(id)).flashing("success" -> "Post %s has been updated".format(post.title))
                   case None => NotFound
                 }
-              })
+              }
+            )
         }
     }
   }

@@ -62,8 +62,9 @@ object Application extends Controller with Secured {
    */
   def login = Logging {
     Action {
-      implicit request =>
-        Ok(html.login(loginForm.fill(Login("", "", Some(flash.get("url").getOrElse("/"))))))
+      implicit request => {
+        Ok(html.login(loginForm.fill(Login("", "", Some(request.headers.get(REFERER).getOrElse(HOME_URL))))))
+      }
     }
   }
 

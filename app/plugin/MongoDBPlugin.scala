@@ -7,6 +7,7 @@ import play.api.Plugin
 import org.bson.types.ObjectId
 import com.mongodb.casbah.Imports._
 import com.mongodb.casbah.gridfs.Imports._
+import com.novus.salat._
 
 class MongoDBPlugin(app: Application) extends Plugin {
 
@@ -77,3 +78,7 @@ object GridFSHelper {
     newFile.id.asInstanceOf[ObjectId]
   }
 }
+
+
+
+

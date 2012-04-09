@@ -2,14 +2,10 @@ package models
 
 import org.specs2.mutable._
 import play.api.test.Helpers.running
-import play.api.test.FakeApplication
-import com.mongodb.casbah.commons.MongoDBObject
 import com.mongodb.casbah.commons.Imports._
-import com.mongodb.WriteConcern
 import models._
 import play.api.test.FakeApplication
 import org.joda.time.DateTime
-import utils._
 
 class PostSpec extends Specification {
 
@@ -19,11 +15,13 @@ class PostSpec extends Specification {
   "with Salat" should {
     var savedId: ObjectId = null
     var deleteId: ObjectId = null
+
+
     "remove all" in {
       running(FakeApplication()) {
         Post.collection.drop()
         User.collection.drop()
-        User.save(User(email = "user@b.com", username = "user", password = "user", firstName = Some("first"), lastName = Some("last")))
+        User.save(User(email = "test@b.com", username = "test", password = "test", firstName = Some("first"), lastName = Some("last")))
         User.count() mustEqual 1 
         Post.count() mustEqual 0
       }
@@ -102,7 +100,8 @@ class PostSpec extends Specification {
 
     "add a comment" in {
       running(FakeApplication()) {
-        val user = User.findOne(MongoDBObject("username" -> "user")).get
+        val user = User.findOne(MongoDBObject("username" -> "test")).get
+        println("add a comment - user._id=[%s]".format(user._id))
         var comment = new Comment(created = new DateTime(), content = "new comment", user = user)
         Post.addComment(savedId, comment)
         var post = Post.findOneByID(savedId).get
@@ -120,7 +119,8 @@ class PostSpec extends Specification {
 
     "add a comment generate EntityNotFoundException" in {
       running(FakeApplication()) {
-        val user = User.findOne(MongoDBObject("username" -> "user")).get
+        val user = User.findOne(MongoDBObject("username" -> "test")).get
+        println("add a comment generate EntityNotFoundException - user._id=[%s]".format(user._id))
         var comment = new Comment(created = new DateTime(), content = "new comment", user = user)
         Post.addComment(deleteId, comment) must throwAn[Exception]
       }

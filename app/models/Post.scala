@@ -1,8 +1,8 @@
 package models
 
-import _root_.salactx._
+import _root_.plugin._
 import com.novus.salat.dao._
-import com.mongodb.casbah.commons.Imports._
+import com.mongodb.casbah.Imports._
 import controllers.Blog
 import javax.persistence.EntityNotFoundException
 import org.joda.time.DateTime
@@ -12,9 +12,9 @@ import play.api.libs.json.{JsObject, JsString, JsValue, Writes}
 case class Post(_id: ObjectId = new ObjectId,
                 title: String,
                 content: String,
+                featured: Boolean = false,
                 authorId: Option[ObjectId] = None,
                 created: DateTime = new DateTime(),
-                featured: Boolean = false,
                 var comments: List[Comment] = Nil) {
   def simpleCopy(src: Post): Post = {
     this.copy(title = src.title,
@@ -23,7 +23,7 @@ case class Post(_id: ObjectId = new ObjectId,
   }
 }
 
-object Post extends SalatDAO[Post, ObjectId](collection = DB.connection("Post")) with Model[Post] with Writes[Post] {
+object Post extends SalatDAO[Post, ObjectId](collection = DB.connection("Post")) with Model[Post, ObjectId] with Writes[Post] {
 
   com.mongodb.casbah.commons.conversions.scala.RegisterConversionHelpers()
   com.mongodb.casbah.commons.conversions.scala.RegisterJodaTimeConversionHelpers()
@@ -55,5 +55,22 @@ object Post extends SalatDAO[Post, ObjectId](collection = DB.connection("Post"))
 
   def featured: Option[Post] = Post.findOne(MongoDBObject("featured" -> true))
 
+  override def update[A <: DBObject](q: A, post: Post)(implicit dao: SalatDAO[Post, ObjectId]) {
+    if (post.featured) {
+      updateFeatured()
+    }
+    super.update(q, post)
+  }
 
+
+  def insert(post: Post)(implicit dao: SalatDAO[Post, ObjectId]) = {
+    if (post.featured) {
+      updateFeatured()
+    }
+    dao.insert(post)
+  }
+
+  def updateFeatured() {
+    collection.updateMulti(MongoDBObject("featured" -> true), $set("featured" -> false))
+  }
 }

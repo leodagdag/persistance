@@ -1,0 +1,35 @@
+@(postForm: Form[Post])(implicit flash: Flash, lang: play.api.i18n.Lang, user: Option[User])
+
+@import helper._
+@import utils.ModuleType
+
+@main(ModuleType.BLOG, Some("Blog")) {
+
+@postForm.globalError.map { error =>
+<div class="row">
+    <div span="12">
+        <p class="error">@error.message</p>
+    </div>
+</div>
+}
+<div class="row">
+    <div class="span12">
+        @form(action = routes.Blog.save, args = 'class -> "form-horizontal") {
+        <legend>@Messages("blog.create.legend")</legend>
+        <fieldset>
+            @inputText(postForm("title"), '_label -> Messages("blog.post.title"))
+            @textarea(postForm("content"), '_label -> Messages("blog.post.content"), 'class -> "markItUp" )
+            @checkbox(
+            postForm("featured"),
+            '_label -> Messages("blog.post.featured"),
+            '_showConstraints -> false
+            )
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">@Messages("blog.create.update")</button>
+                <a class="btn" href="@routes.Blog.index">@Messages("blog.create.cancel")</a>
+            </div>
+        </fieldset>
+        }
+    </div>
+</div>
+}

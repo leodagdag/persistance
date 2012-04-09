@@ -13,7 +13,7 @@ object Global extends GlobalSettings {
   def createPost {
     Post.collection.drop
     var comments: List[Comment] = List.empty
-    (1 to 10).foreach {
+    (1 to 1).foreach {
       i =>
         comments = comments :+ Comment(content = "Comment's content " + i, user = User.findOne(MongoDBObject("username" -> "user")).get)
     }
@@ -29,14 +29,21 @@ object Global extends GlobalSettings {
 
   override def onStart(app: Application) {
     Logger.info("Application start")
-    val admin = User.findOne(MongoDBObject("admin" -> true))
-    admin match {
-      case None => User.save(User(email = "admin@b.com", username = "admin", password = "admin", admin = true))
-      case Some(admin) =>
-    }
-    if (app.mode == Mode.Dev) {
-      createUser
-      createPost
+    app.mode match {
+      case Mode.Dev => {
+        createUser
+        createPost
+      }
+      case Mode.Test => {
+
+      }
+      case Mode.Prod => {
+        val admin = User.findOne(MongoDBObject("admin" -> true))
+        admin match {
+          case None => User.save(User(email = "admin@b.com", username = "admin", password = "admin", admin = true))
+          case Some(admin) =>
+        }
+      }
     }
   }
 

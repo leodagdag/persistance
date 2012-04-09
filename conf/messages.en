@@ -14,6 +14,7 @@ since.months  = months
 since.year    = year
 since.years   = years
 
+
 # Navigation
 navigation.administration=Administration
 navigation.blog=Blog
@@ -21,22 +22,31 @@ navigation.portfolio=Portfolio
 navigation.login=Login
 navigation.logout=Logout
 
+
 # Login
 login.username=User name
 login.password=Password
 login.login=Login
 login.signin=Sign in
 
+
 # Post
 post.by=by
 post.at=at
+blog.post.title=Title
+blog.post.content=Content
+blog.post.featured=Featured
+
+blog.create=Create a new post
+blog.create.legend=Create a new post
+blog.create.update=Save
+blog.create.cancel=Cancel
+
 post.edit=Edit the post
 blog.edit.legend=Edit the post
-blog.edit.post.title=Title
-blog.edit.post.content=Content
-blog.edit.post.featured=Featured
 blog.edit.update=Update
 blog.edit.cancel=Cancel
+
 
 # Comment
 comment.by=by

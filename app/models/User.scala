@@ -1,6 +1,6 @@
 package models
 
-import _root_.salactx._
+import _root_.plugin._
 import com.novus.salat.dao._
 import com.mongodb.casbah.commons.Imports._
 
@@ -22,15 +22,14 @@ case class User(_id: ObjectId = new ObjectId,
   }
 }
 
-object User extends SalatDAO[User, ObjectId](collection = DB.connection("User")) with Model[User] {
+object User extends SalatDAO[User, ObjectId](collection = DB.connection("User")) with Model[User, ObjectId] {
 
   def authenticate(username: String, password: String): Option[User] = {
     this.findOne(MongoDBObject("username" -> username, "password" -> password))
   }
 
   def byUsername(username: String): Option[User] = {
-    val u = this.findOne(MongoDBObject("username" -> username))
-    u
+    this.findOne(MongoDBObject("username" -> username))
   }
 
 }

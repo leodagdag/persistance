@@ -14,11 +14,13 @@ GET     /logout                     controllers.Application.logout
 GET     /portfolio                  controllers.Portfolio.index
 
 # Blog
-GET     /blog/:id/json              controllers.Blog.showJson(id: String)
 GET     /blog                       controllers.Blog.index
+GET     /blog/create                controllers.Blog.create
+POST    /blog/save                  controllers.Blog.save
 GET		/blog/:id					controllers.Blog.show(id: String)
 GET		/blog/:id/edit				controllers.Blog.edit(id: String)
 POST	/blog/:id/update			controllers.Blog.update(id: String)
+GET     /blog/:id/json              controllers.Blog.showJson(id: String)
 
 # Administration
 GET     /admin		                controllers.Administration.index

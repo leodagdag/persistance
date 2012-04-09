@@ -15,15 +15,15 @@
         <div class="span12">
             <h2>@post.title</h2>
             <h5>@Messages("post.by") @getUser(post.authorId.get).fullname, @Messages("post.at") @formatDate(post.created)
-                 @* user match {
+                @user match {
                     case Some(user) => {
-                         @if(post.authorId.get.equals(user._id)) {    *@
+                         @if(post.authorId.get.equals(user._id)) {
                             <a class="btn btn-mini" href="@routes.Blog.edit(post._id.toString())" title="@Messages("post.edit")"><i class="icon-pencil"></i></a>
-                        @* }
+                         }
                     }
                     case None => {
                     }
-                } *@
+                }
             </h5>
             <p>@post.content</p>
         </div>

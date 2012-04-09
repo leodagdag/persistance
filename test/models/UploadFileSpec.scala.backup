@@ -18,6 +18,7 @@ import scala.Some
  */
 /*
 class UploadFileSpec extends Specification {
+
   "UploadFile" should {
     val FILE_NAME: String = "thinking.jpg"
     val FILE_PATH: String = "public/images/test/thinking.jpg"
@@ -25,6 +26,7 @@ class UploadFileSpec extends Specification {
     val KEY = "key1"
     val VALUE = "value1"
     def logo_fh = new FileInputStream(FILE_PATH)
+    StoredId.collection.drop()
 
     def logo_bytes = {
       val data = new Array[Byte](logo_fh.available())

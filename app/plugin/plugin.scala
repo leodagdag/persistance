@@ -1,11 +1,15 @@
 import com.novus.salat.Context
 import play.api.Play.current
 import play.api.Play
-import com.mongodb.casbah.MongoConnection
 import play.api.Logger
-import plugin.MongoDBPlugin
 
-package object salactx {
+/**
+ * User: leodagdag
+ * Date: 08/04/12
+ * Time: 20:23
+ */
+
+package object plugin {
   /**
    * Here is where we define the custom Play serialization context, including the Play classloader.
    */
@@ -19,9 +23,6 @@ package object salactx {
   }
 
   object DB {
-    //val connection = MongoConnection()("dev")
     val connection = MongoDBPlugin.connection
-
   }
-
 }
