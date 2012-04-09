@@ -127,6 +127,7 @@ class PostSpec extends Specification {
         Post.addComment(deleteId, comment) must throwAn[Exception]
       }
     }
-       */
+
   }
 }
+*/
