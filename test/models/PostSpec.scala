@@ -6,7 +6,7 @@ import com.mongodb.casbah.commons.Imports._
 import models._
 import play.api.test.FakeApplication
 import org.joda.time.DateTime
-/*
+
 class PostSpec extends Specification {
 
   com.mongodb.casbah.commons.conversions.scala.RegisterConversionHelpers()
@@ -130,4 +130,3 @@ class PostSpec extends Specification {
 
   }
 }
-*/
