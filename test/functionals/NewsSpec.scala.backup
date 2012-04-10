@@ -5,9 +5,10 @@ import org.specs2.mutable.Specification
 /**
  * User: LeoDagDag
  * Date: 13/03/12
- * Time: 21:59
+ * Time: 21:54
  */
-
-class ContactsSpec extends Specification {
+/*
+class NewsSpec extends Specification {
 
 }
+*/

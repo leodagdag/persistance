@@ -2,20 +2,21 @@ package functionals
 
 import org.specs2.mutable.Specification
 import play.api.test.Helpers._
-import play.api.test.{FakeRequest, FakeApplication}
+
+import play.api.test.{FakeApplication, FakeRequest}
 
 /**
- * User: LeoDagDag
+ * User: leodagdag
  * Date: 13/03/12
  * Time: 21:53
  */
-
-class PortfoliosSpec extends Specification {
+/*
+class ApplicationSpec extends Specification {
   /*
-  "Portfolio$" should {
+  "Application" should {
     "Action index" in {
       running(FakeApplication()) {
-        val Some(result) = routeAndCall(FakeRequest(GET, "/portfolio"))
+        val Some(result) = routeAndCall(FakeRequest(GET, "/"))
 
         status(result) must equalTo(OK)
         contentType(result) must beSome("text/html")
@@ -23,5 +24,6 @@ class PortfoliosSpec extends Specification {
       }
     }
   }
-  */
+  
 }
+*/
