@@ -11,7 +11,7 @@ import com.novus.salat._
 
 class MongoDBPlugin(app: Application) extends Plugin {
 
-  val DEFAULT_HOST = "localhost:27017"
+  val DEFAULT_HOST = "127.0.0.1:27017"
 
   def getCollection(name: String): MongoCollection = {
     mongoDB(name)
