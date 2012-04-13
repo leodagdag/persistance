@@ -20,7 +20,7 @@ object ApplicationBuild extends Build {
     .settings(
       // Sonatype repository
       resolvers += "Sonatype repository" at "https://oss.sonatype.org/content/repositories/releases/"
-    )
+    ).settings(com.typesafe.sbtscalariform.ScalariformPlugin.defaultScalariformSettings: _*)
       
   // Only compile the bootstrap bootstrap.less file and any other *.less file in the stylesheets directory
   def customLessEntryPoints(base: File): PathFinder = (

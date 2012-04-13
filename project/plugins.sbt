@@ -7,6 +7,9 @@ resolvers += "Typesafe repository" at "http://repo.typesafe.com/typesafe/release
 // Use the Play sbt plugin for Play projects
 addSbtPlugin("play" % "sbt-plugin" % "2.0")
 
+//SBT Scala format
+addSbtPlugin("com.typesafe.sbtscalariform" % "sbtscalariform" % "0.3.0")
+
 // Use for intellij
 resolvers += "sbt-idea-repo" at "http://mpeltonen.github.com/maven/"
 
