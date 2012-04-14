@@ -10,9 +10,7 @@ import play.api.test.{FakeApplication, FakeRequest}
  * Date: 13/03/12
  * Time: 21:53
  */
-/*
 class ApplicationSpec extends Specification {
-  /*
   "Application" should {
     "Action index" in {
       running(FakeApplication()) {
@@ -26,4 +24,3 @@ class ApplicationSpec extends Specification {
   }
   
 }
-*/
