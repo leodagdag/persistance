@@ -1,5 +1,21 @@
+@(id: String)(implicit flash: Flash, lang: play.api.i18n.Lang, user: Option[User])
+
+@import helper._
+
+@implicitFieldConstructor = @{ FieldConstructor(tags.twitterBootstrapInput.f) }
+
 <div class="row">
     <div class="span12">
-
+        @form(action = routes.Blog.addComment(id), args = 'class -> "form-horizontal") {
+            <div class="control-group">
+                <label class="control-label" for="textarea">@Messages("blog.post.comment.content")</label>
+                <div class="controls">
+                    <textarea class="input-xlarge markItUp" id="textarea" name="content" ></textarea>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">@Messages("blog.post.comment.save")</button>
+            </div>
+        }
     </div>
 </div>

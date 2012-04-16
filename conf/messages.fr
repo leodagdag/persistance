@@ -37,6 +37,9 @@ blog.post.title=Titre
 blog.post.content=Contenu
 blog.post.featured=A la une
 
+blog.post.comment.content=Commentaire
+blog.post.comment.save=Sauvegarder
+
 blog.create=Ecrire un nouvel article
 blog.create.legend=Créer un nouvel article
 blog.create.update=Sauvegarder

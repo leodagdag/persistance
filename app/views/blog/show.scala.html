@@ -28,6 +28,6 @@
             <p>@post.content</p>
         </div>
     </div>
-
+    @tags.newComment(post._id.toString)
     @tags.comments(post.comments)
 }

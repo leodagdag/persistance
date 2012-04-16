@@ -3,22 +3,15 @@ package controllers
 import play.api.Play.current
 import play.api._
 import libs.json.Json._
-import play.api.i18n._
 import play.api.mvc._
 import play.api.data._
 import play.api.data.Forms._
-import play.api.data.format.Formats._
 
 import org.bson.types.ObjectId
 import com.mongodb.casbah.commons.MongoDBObject
-import com.mongodb.casbah.Imports._
 
-import templates.HtmlFormat
-import utils._
 import models._
 import views._
-import org.joda.time.DateTime
-import org.apache.commons.lang.StringEscapeUtils
 
 /**
  * User: leodagdag
@@ -54,8 +47,28 @@ object Blog extends Controller with Secured {
             post.title,
             post.content,
             post.featured))
-
     )
+
+
+
+
+  def addComment(id: String) = Logging {
+    IsAuthenticated {
+      username =>
+        Action {
+          implicit request => {
+            Form("content" -> nonEmptyText).bindFromRequest.fold(
+              formWithErrors => BadRequest,
+              newComment => {
+                val comment: Comment = new Comment(user = user.get, content = newComment)
+                Post.addComment(ObjectId.massageToObjectId(id), comment);
+                Ok
+              }
+            )
+          }
+        }
+    }
+  }
 
   def index = Logging {
     Action {
@@ -152,5 +165,6 @@ object Blog extends Controller with Secured {
         }
     }
   }
+
 
 }

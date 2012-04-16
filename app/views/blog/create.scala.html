@@ -3,6 +3,8 @@
 @import helper._
 @import utils.ModuleType
 
+@implicitFieldConstructor = @{ FieldConstructor(tags.twitterBootstrapInput.f) }
+
 @main(ModuleType.BLOG, Some("Blog")) {
 
 @postForm.globalError.map { error =>

@@ -63,11 +63,11 @@ object Post extends SalatDAO[Post, ObjectId](collection = DB.connection("Post"))
   }
 
 
-  def insert(post: Post)(implicit dao: SalatDAO[Post, ObjectId]) = {
+  override def insert(post: Post) = {
     if (post.featured) {
       updateFeatured()
     }
-    dao.insert(post)
+    super.insert(post)
   }
 
   def updateFeatured() {

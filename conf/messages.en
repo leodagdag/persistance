@@ -37,6 +37,9 @@ blog.post.title=Title
 blog.post.content=Content
 blog.post.featured=Featured
 
+blog.post.comment.content=Comment
+blog.post.comment.save=Save
+
 blog.create=Create a new post
 blog.create.legend=Create a new post
 blog.create.update=Save

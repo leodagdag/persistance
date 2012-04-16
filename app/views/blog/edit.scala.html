@@ -16,7 +16,7 @@
 	}
   	<div class="row">
 		<div class="span12">
-			@form(action = routes.Blog.update(id), args = 'class -> "form-horizontal") {
+			@form(action = routes.Blog.update(postForm("_id").toString), args = 'class -> "form-horizontal") {
 				<legend>@Messages("blog.edit.legend")</legend>
 				<fieldset>
 					<input type="hidden" name="_id" value="@id">
