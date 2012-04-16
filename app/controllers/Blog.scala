@@ -50,11 +50,9 @@ object Blog extends Controller with Secured {
     )
 
 
-
-
   def addComment(id: String) = Logging {
     IsAuthenticated {
-      username =>
+      username => {
         Action {
           implicit request => {
             Form("content" -> nonEmptyText).bindFromRequest.fold(
@@ -67,6 +65,7 @@ object Blog extends Controller with Secured {
             )
           }
         }
+      }
     }
   }
 
